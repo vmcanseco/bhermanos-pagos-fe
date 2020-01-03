@@ -4,3 +4,79 @@
 .footer-gray-color {
     background-color: #7f7c80;
 }
+th.column-header {
+    background-color: hsl(24, 94%, 66%);
+    color: #ffffff;
+    font-weight: bold;
+
+}
+.table-bordered{
+    border: 1px solid #eca482;
+}
+.table thead th{
+    border-bottom:  2px solid #eca482;
+}
+.table-bordered td, .table-bordered th {
+    border: 1px solid #eca482;
+}
+table.table-hover tbody tr:hover {
+    background-color: rgba(236, 78, 10, 0.281);
+    -webkit-transition: .5s;
+    transition: .5s;
+}
+.search>.input-group>.form-control:not(:last-child){
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.bootstrap-table .fixed-table-container .table tbody tr.selected td {
+    background-color: rgba(236, 78, 10, 0.281);
+}
+
+.btn:focus, .btn:active:focus, .btn.active:focus {
+    outline: 0 none;
+}
+ 
+.btn-primary {
+    background: #fc7334 !important;
+    color: #ffffff !important;
+}
+ 
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    background: #fc5203 !important;
+}
+ 
+.btn-primary:active, .btn-primary.active {
+    background: #fc5203 !important;
+    box-shadow: none !important;
+}
+
+.btn-secondary {
+    background-color: rgb(241, 205, 75) !important;
+    color: #ffffff !important;
+}
+ 
+.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active, .open > .dropdown-toggle.btn-secondary {
+    background-color: #FDCB18 !important;
+}
+ 
+.btn-secondary:active, .btn-secondary.active {
+    background-color: #FDCB18 !important;
+    box-shadow: none !important;
+}
+
+.custom-header-card{
+    background-color: #FDCB18 !important;
+    color:  #fff;
+    font-weight: bold;
+    /*border-bottom-color: #ccebf8 !important;*/
+  
+  }
+  .btn-secondary.dropdown-toggle:hover, .btn-secondary.dropdown-toggle:focus{
+    background: #FDCB18 !important;
+  }
+  :not([disabled]):not(.disabled).btn-secondary:active, :not([disabled]):not(.disabled).btn-secondary.active, .show > .btn-secondary.dropdown-toggle{
+    background: #FDCB18 !important;
+  }
+  .btn-secondary.dropdown-toggle{
+    background: #FDCB18 !important;
+  }

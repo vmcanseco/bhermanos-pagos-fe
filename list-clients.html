@@ -1,3 +1,63 @@
+<link href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="js/utils.js"></script>
+
 <div class="container-fluid mt-3">
-    <<!-- Content here -->>
+  <div class="card">
+    <div class="card-header custom-header-card text-center">
+      <h5>Clientes</h5>
+    </div>
+    <div class="card-body">
+      <div id="toolbar">
+        <button type="button" class="btn btn-primary action-button" id="btn-new-client" data-page="new-client"><i
+            class="fas fa-user-plus"></i> Agregar
+          Cliente</button>
+        <button type="button" class="btn btn-primary action-button" id="btn-add-voucher" disabled><i
+            class="fas fa-money-check-alt"></i>
+          Ver Vales</button>
+        <button type="button" class="btn btn-primary action-button" id="btn-view-statement" disabled><i
+            class="fas fa-file-invoice"></i>
+          Ver Pagos</button>
+      </div>
+      <table id="table" data-toggle="table" data-url="http://localhost:6080/bhermanos-cobranza-api/api/clientes"
+        data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-fullscreen="true"
+        data-show-columns="true" data-show-columns-toggle-all="true" data-show-export="true"
+        data-sort-class="table-active" data-sortable="true" data-cache="false" data-pagination="true"
+        data-locale="es-MX" data-show-search-clear-button="true" data-page-list="[10, 25, 50, 100, all]"
+        data-search-on-enter-key="true" data-toolbar="#toolbar" data-click-to-select="true" data-id-field="id">
+        <thead>
+          <tr>
+            <th data-radio="true" class="column-header"></th>
+            <th data-field="id" data-sortable="true" class="column-header">Id</th>
+            <th data-field="numero" data-sortable="true" class="column-header">Número</th>
+            <th data-field="nombre" data-sortable="true" class="column-header">Nombre</th>
+            <th data-field="apellidoPaterno" data-sortable="true" class="column-header">Apellido Paterno</th>
+            <th data-field="apellidoMaterno" data-sortable="true" class="column-header">Apellido Materno</th>
+            <th data-field="calle" class="column-header">Calle</th>
+            <th data-field="numeroExt" class="column-header">Numero Ext</th>
+            <th data-field="colonia" data-sortable="true" class="column-header">Colonia</th>
+            <th data-field="zona" data-sortable="true" class="column-header">Zona</th>
+            <th data-field="telCasa" class="column-header">Tel. Casa</th>
+            <th data-field="movil" class="column-header">Móvil</th>
+            <th data-field="correoElectronico" class="column-header" data-formatter="emailFormatter">Correo</th>
+            <th data-field="fechaAlta" class="column-header">Fecha de Alta</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
   </div>
+  <script type="text/javascript">
+    $(".action-button").on("click", function () {
+      //$("#main_content").load("form.html");
+      loadModule(this);
+    });
+    $('#table').on('click-row.bs.table', function (row, element, field) {
+      console.log(row);
+      $("#btn-add-voucher").removeAttr("disabled");
+      $("#btn-view-statement").removeAttr("disabled");
+    });
+  </script>
