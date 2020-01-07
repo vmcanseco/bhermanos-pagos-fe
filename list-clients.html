@@ -16,6 +16,9 @@
         <button type="button" class="btn btn-primary action-button" id="btn-new-client" data-page="new-client"><i
             class="fas fa-user-plus"></i> Agregar
           Cliente</button>
+        <button type="button" class="btn btn-primary action-button" id="btn-edit-client" data-page="new-client"
+          disabled><i class="fas fa-user-edit"></i> Ver
+          Cliente</button>
         <button type="button" class="btn btn-primary action-button" id="btn-add-voucher" disabled><i
             class="fas fa-money-check-alt"></i>
           Ver Vales</button>
@@ -51,13 +54,15 @@
     </div>
   </div>
   <script type="text/javascript">
+    localStorage.removeItem("currentClientId");
     $(".action-button").on("click", function () {
-      //$("#main_content").load("form.html");
       loadModule(this);
     });
+
     $('#table').on('click-row.bs.table', function (row, element, field) {
-      console.log(row);
+      localStorage.setItem("currentClientId", element.id);
       $("#btn-add-voucher").removeAttr("disabled");
+      $("#btn-edit-client").removeAttr("disabled");
       $("#btn-view-statement").removeAttr("disabled");
     });
   </script>

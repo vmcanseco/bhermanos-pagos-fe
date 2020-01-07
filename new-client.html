@@ -2,19 +2,23 @@
 <link rel="stylesheet" href="css/style.css">
 <script type="text/javascript" src="datepicker/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript" src="datepicker/locales/bootstrap-datepicker.es.min.js"></script>
-<script src="js/utils.js"></script>
-<script src="js/client-data-service.js"></script>
+
 
 <div class="container-fluid mt-3">
     <div class="card">
         <div class="card-header custom-header-card text-center">
-            <h5>Agregar Cliente</h5>
+            <h5 id="module-client-title">Información del Cliente</h5>
         </div>
         <div class="card-body">
             <form class="text-center needs-validation" data-toggle="validator" novalidate id="frm-client">
+                <input type="hidden" name="activo" id="hid-active">
                 <div class="md-form  input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Ingrese INE a validar" aria-label="INE" name="ine" id="txt-ine"
-                        aria-describedby="btn-val-ine" maxlength="15" required>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text md-addon">INE</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Ingrese INE a validar" aria-label="INE"
+                        name="ine" id="txt-ine" aria-describedby="btn-val-ine" maxlength="15" required
+                        data-editable="0">
                     <div class="invalid-feedback" id="divInvalidINE">
                         Indique número de INE.
                     </div>
@@ -27,12 +31,12 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text md-addon">Número de Cliente</span>
                     </div>
-                    <input type="number" name="numero" id="txt-id" maxlength="11" aria-label="Id" class="form-control"
-                        placeholder="Id" disabled>
+                    <input type="number" name="id" id="txt-id" maxlength="11" aria-label="Id" class="form-control"
+                        placeholder="Id" required readonly>
                     <input type="number" name="numero" id="txt-number" maxlength="11" aria-label="Interno"
-                        class="form-control" placeholder="Interno" required>
-                    <input type="text" name="idExterno" id="txt-last-name" maxlength="50" aria-label="Id Externo"
-                        class="form-control" placeholder="Id Externo">
+                        class="form-control" placeholder="Interno" required data-editable="0">
+                    <input type="text" name="idExterno" id="txt-external-id" maxlength="50" aria-label="Id Externo"
+                        class="form-control" placeholder="Id Externo" data-editable="0">
                 </div>
                 <div class="md-form input-group mb-3">
                     <div class="input-group-prepend">
@@ -51,7 +55,7 @@
                     </div>
                     <input type="text" name="calle" id="txt-street" maxlength="100" aria-label="Calle"
                         class="form-control" placeholder="Calle" required>
-                    <input type="text" name="numExt" id="txt-num-ext" maxlength="10" aria-label="Número Ext."
+                    <input type="text" name="numeroExt" id="txt-num-ext" maxlength="10" aria-label="Número Ext."
                         class="form-control" placeholder="Número Ext." required>
                     <input type="text" name="numInt" id="txt-num-int" maxlength="5" aria-label="Número Int."
                         class="form-control" placeholder="Número Int.">
@@ -106,14 +110,14 @@
                         <span class="input-group-text md-addon">Fecha de Alta</span>
                     </div>
                     <input placeholder="Selecciona la Fecha de Alta" type="text" id="txt-record-date"
-                        class="form-control" required>
+                        class="form-control" name="fechaAlta" required>
                 </div>
                 <div class="md-form input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text md-addon">Estatus del Cliente</span>
                     </div>
-                    <input type="text" id="txt-active" aria-label="Estatus del Cliente" class="form-control" disabled
-                        value="Activo">
+                    <input type="text" id="txt-active" aria-label="Estatus del Cliente" class="form-control"
+                        data-editable="0">
 
                 </div>
                 <div class=" md-form input-group mb-3">
@@ -121,22 +125,26 @@
                         <span class="input-group-text md-addon">Historial</span>
                     </div>
                     <input type="text" name="fechaCreacion" id="txt-created-on" aria-label="Fecha de Creación"
-                        class="form-control" disabled placeholder="Fecha de Creación">
+                        class="form-control" placeholder="Fecha de Creación" data-editable="0">
                     <input type="text" name="fechaModificacion" id="txt-updated-on" aria-label="Última de Modificación"
-                        class="form-control" disabled placeholder="Última de Modificación">
+                        class="form-control" placeholder="Última de Modificación" data-editable="0">
                 </div>
                 <div class="text-center">
                     <button type="buttton" class="btn btn-primary" id="btn-save"><i
                             class="fas fa-cloud mr-1"></i>Guardar</button>
+                    <!-- <button type="button" class="btn btn-primary action-button" id="btn-new-client"
+                        data-page="new-client"><i class="fas fa-user-plus"></i> Agregar
+                        Cliente</button>-->
                     <button type="button" class="btn btn-primary"><i class="fas fa-undo mr-1"></i>Revertir
                         Cambios</button>
-                    <button type="button" class="btn btn-primary"><i class="fas fa-user-minus mr-1"></i>Dar de
+                    <button type="button" class="btn btn-primary" disabled data-client-exists="0"><i
+                            class="fas fa-user-minus mr-1"></i>Dar de
                         Baja</button>
-                    <button type="button" class="btn btn-primary" id="btn-add-voucher" disabled><i
-                            class="fas fa-money-check-alt"></i>
+                    <button type="button" class="btn btn-primary" id="btn-add-voucher" disabled
+                        data-client-exists="0"><i class="fas fa-money-check-alt"></i>
                         Ver Vales</button>
-                    <button type="button" class="btn btn-primary" id="btn-view-statement" disabled><i
-                            class="fas fa-file-invoice"></i>
+                    <button type="button" class="btn btn-primary" id="btn-view-statement" disabled
+                        data-client-exists="0"><i class="fas fa-file-invoice"></i>
                         Ver Pagos</button>
                     <button type="button" class="btn btn-primary"><i class="fas fa-users mr-1"></i>Ir a Listado de
                         Clientes</button>
@@ -148,6 +156,30 @@
         </div>
     </div>
     <script type="text/javascript">
+        var clientAction = "";
+        //var clientId = localStorage.getItem("currentClientId");
+        console.log(getClientId());
+
+        $('#txt-record-date').datepicker({
+            todayBtn: "linked",
+            clearBtn: true,
+            language: "es",
+            format: "dd-mm-yyyy"
+        });
+
+        if (getClientId() !== null) {
+            clientAction = "edit";
+            $("input[data-editable='0']").attr("readonly", true);
+            var jqXHR = findById(parseInt(getClientId())).done(createEditDoneHandler).fail(createEditFailHandler);
+            if (jqXHR.status != 200) {
+                showAlert("BHermanos", jqXHR.responseText, "error");
+            }
+        } else {
+            clientAction = "create";
+            $('#txt-record-date').datepicker('setDate', new Date());
+            $("#hid-active").val("Y");
+            $("#txt-active").val("Activo");
+        }
 
         $("#btn-save").on("click", function (event) {
             event.preventDefault();
@@ -159,30 +191,46 @@
             if (isValidForm) {
                 var postdata = serializeForm(form);
                 console.log(postdata);
-                var jqXHR = createClient(postdata).done(function (data, textStatus, jqXHR) {
-                    console.log(textStatus);
-                    //requestServiceResponse = data.container_service_request;
-
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR.responseText);
-                    console.log(errorThrown);
-                    showAlert("BHermanos", jqXHR.responseText, "error");
-                });
+                //var jqXHR;
+                switch (clientAction) {
+                    case "create":
+                        var jqXHR = createClient(postdata).done(createEditDoneHandler).fail(createEditFailHandler);
+                        if (jqXHR.status == 200) {
+                            $("input[data-editable='0']").attr("readonly", true);
+                            $("button[data-client-exists='0']").attr("disabled", false);
+                            showAlert("BHermanos", "Cliente registrado exitósamente", "success");
+                            localStorage.setItem("currentClientId", postdata.id);
+                        } else {
+                            showAlert("BHermanos", jqXHR.responseText, "error");
+                        }
+                        console.log("jqXHR");
+                        console.log(jqXHR);
+                        clientAction = "edit";
+                        break;
+                    case "edit":
+                        var id = parseInt(getClientId());
+                        var jqXHR = updateClient(id, postdata).done(createEditDoneHandler).fail(createEditFailHandler);
+                        if (jqXHR.status == 200) {
+                            //$("input[data-editable='0']").attr("disabled", true);
+                            showAlert("BHermanos", "Cliente actualizado exitósamente", "success");
+                        } else {
+                            showAlert("BHermanos", jqXHR.responseText, "error");
+                        }
+                        console.log("jqXHR");
+                        console.log(jqXHR);
+                        break;
+                    default:
+                }
             }
         });
 
-        $('#txt-record-date').datepicker({
-            todayBtn: "linked",
-            clearBtn: true,
-            language: "es"
-        });
-        $('#txt-record-date').datepicker('setDate', new Date());
+
+
         $("#txt-ine").on("change", function () {
             var active = $(this).val().trim().length === 0;
-
             $("#btn-val-ine").attr("disabled", active);
-
         });
+
         $("#btn-val-ine").on("click", function () {
             var jqXHR = checkINE($("#txt-ine").val()).done(function (data, textStatus, jqXHR) {
                 console.log(textStatus);
@@ -194,5 +242,35 @@
                 showAlert("BHermanos", jqXHR.responseText, "error");
             });
         });
+
+        function fillClientForm(data) {
+            $.each(data, function (key, val) {
+                $("input[name='" + key + "']").val(val);
+                console.log(key);
+                if (key === "activo") {
+                    var active = "Inactivo";
+                    if (val === "Y") {
+                        active = "Activo"
+                    }
+
+                    $("#txt-active").val(active);
+                }
+            });
+            $('.datepicker').datepicker('update', data.fechaAlta);
+        }
+
+        function createEditDoneHandler(data, textStatus, jqXHR) {
+            console.log(data);
+            fillClientForm(data);
+        }
+
+        function createEditFailHandler(jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.responseText);
+            console.log(errorThrown);
+        }
+
+        function getClientId() {
+            return localStorage.getItem("currentClientId");
+        }
 
     </script>

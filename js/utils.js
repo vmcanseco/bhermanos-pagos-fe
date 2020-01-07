@@ -6,6 +6,7 @@ function emailFormatter(value) {
 function serializeForm(formId) {
     var o = {};
     var a = $(formId).serializeArray();
+
     $.each(a, function () {
         var componentName = this.name;
         console.log("component_name " + componentName);

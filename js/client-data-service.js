@@ -25,6 +25,30 @@ function createClient(client) {
     return jqXHR;
 }
 
+function updateClient(id, client) {
+
+    var url = URL_CLIENT_MICROSERVICE + "/" + id;
+
+    console.log("Submit URL " + url);
+    console.log(JSON.stringify(client));
+
+    var settings = {
+        "crossDomain": true,
+        "url": url,
+        "method": "PUT",
+        "data": JSON.stringify(client),
+        "contentType": "application/json; charset=utf-8",
+        "dataType": "json",
+        "async": false,
+        "timeout": MAX_TIMEOUT_SECONDS
+    }
+
+    var jqXHR = $.ajax(settings);
+
+    return jqXHR;
+}
+
+
 function checkINE(ine) {
     var url = URL_CLIENT_MICROSERVICE + "/exists?ine=" + ine;
 
@@ -33,6 +57,23 @@ function checkINE(ine) {
         "url": url,
         "method": "GET",
         "async": false,
+        "timeout": MAX_TIMEOUT_SECONDS
+    }
+
+    var jqXHR = $.ajax(settings);
+
+    return jqXHR;
+};
+
+function findById(id) {
+    var url = URL_CLIENT_MICROSERVICE + "/" + id;
+
+    var settings = {
+        "crossDomain": true,
+        "url": url,
+        "method": "GET",
+        "async": false,
+        "dataType": "json",
         "timeout": MAX_TIMEOUT_SECONDS
     }
 

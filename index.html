@@ -30,7 +30,7 @@
       <a class="navbar-brand" href="#">Gestión de Cobranza</a>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="btn-toggle">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -73,18 +73,18 @@
               aria-expanded="false">Reportes</a>
             <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item action-menu" href="#" data-title="Reporte 1">Reporte 1</a>
-              <a class="dropdown-item action-menu" href="#" data-title="Reporte "">Reporte 2</a>
+              <a class="dropdown-item action-menu" href="#" data-title="Reporte 2">Reporte 2</a>
             </div>
           </li>
         </ul>
 
         <span class=" navbar-text">
-                <a class="navbar-brand" href="#">
-                  <img src="img/logo.png" height="45" alt="BHermanos">
-                </a>
-                </span>
-            </div>
+          <a class="navbar-brand" href="#">
+            <img src="img/logo.png" height="45" alt="BHermanos">
+          </a>
+        </span>
       </div>
+    </div>
   </nav>
 
   <main id="main_content">
@@ -95,7 +95,6 @@
         <small class="text-muted" id="module-subtile"></small>
       </h3>
     </section>
-    </h1>
   </main>
   <!--</div>-->
   <footer class="page-footer font-small footer-gray-color fixed-bottom">
@@ -117,7 +116,15 @@
   <script type="text/javascript" src="js/mdb.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <!-- Your custom scripts (optional) -->
+  <script src="js/utils.js"></script>
+  <script src="js/client-data-service.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript">
+
+    $("#new-client").on("click", function () {
+      localStorage.removeItem("currentClientId");
+    })
+  </script>
 
 </body>
 

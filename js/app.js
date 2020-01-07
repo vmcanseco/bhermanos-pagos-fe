@@ -11,6 +11,9 @@ $(document).ready(function () {
         //var title = $(this).attr("data-title");
         ///var id = $(this).attr("id");
         //$("#module-title").text(title);
+        /*$("#btn-toggle").attr("aria-expanded", "false");
+        $("#btn-toggle").addClass("collapsed");
+        $("#navbarNav").removeClass("show");*/
         $(".navbar-nav .nav-item.active").removeClass("active");
 
         if ($(this).hasClass("nav-item")) {
@@ -19,6 +22,9 @@ $(document).ready(function () {
             $(this).parent().parent().addClass("active");
         }
         loadModule(this);
+        if ($("#navbarNav").hasClass("show")) {
+            $("#btn-toggle").trigger("click");
+        }
 
 
     });
