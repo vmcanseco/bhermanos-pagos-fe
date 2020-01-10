@@ -3,6 +3,9 @@ function emailFormatter(value) {
     return '<a href="mailto:' + value + '"><u>' + value + '</u></a>';
 }
 
+function getClientId() {
+    return localStorage.getItem("currentClientId");
+}
 function serializeForm(formId) {
     var o = {};
     var a = $(formId).serializeArray();
@@ -40,4 +43,54 @@ function showAlertAsHTML(title, htmlmessage, alert) {
         content: htmlmessage,
         icon: alert,
     });
+}
+
+function moneyFormatter(value) {
+    return "$ " + value;
+}
+
+function voucherType(value) {
+    var result = "";
+    switch (value) {
+        case "V":
+            result = "Vale";
+            break;
+        case "C":
+            result = "Contravale";
+            break;
+        default:
+            result = value;
+
+    }
+    return result;
+}
+
+function paymentStatus(value) {
+    if (value === "Y") {
+        return "Liquidado";
+    } else {
+        return "Pendiente";
+    }
+}
+
+
+function totalMoneyFormatter(data) {
+    var field = this.field
+    return '$' + data.map(function (row) {
+        return +row[field]
+    }).reduce(function (sum, i) {
+        return sum + i
+    }, 0)
+}
+
+function totalFormatter(data) {
+    return "Total";
+}
+
+function totalVochersFormatter(data) {
+    var text = " Vale."
+    if (data.length > 0) {
+        text = " Vales."
+    }
+    return data.length + " Vale";
 }

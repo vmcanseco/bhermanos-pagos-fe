@@ -140,13 +140,14 @@
                     <button type="button" class="btn btn-primary" disabled data-client-exists="0"><i
                             class="fas fa-user-minus mr-1"></i>Dar de
                         Baja</button>
-                    <button type="button" class="btn btn-primary" id="btn-add-voucher" disabled
-                        data-client-exists="0"><i class="fas fa-money-check-alt"></i>
+                    <button type="button" class="btn btn-primary action-button" id="btn-add-voucher" disabled
+                        data-client-exists="0" data-page="list-client-vouchers"><i class="fas fa-money-check-alt"></i>
                         Ver Vales</button>
-                    <button type="button" class="btn btn-primary" id="btn-view-statement" disabled
+                    <button type="button" class="btn btn-primary action-button" id="btn-view-statement" disabled
                         data-client-exists="0"><i class="fas fa-file-invoice"></i>
                         Ver Pagos</button>
-                    <button type="button" class="btn btn-primary"><i class="fas fa-users mr-1"></i>Ir a Listado de
+                    <button type="button" class="btn btn-primary action-button" data-page="list-clients"><i
+                            class="fas fa-users mr-1"></i>Ir a Listado de
                         Clientes</button>
                 </div>
             </form>
@@ -159,6 +160,9 @@
         var clientAction = "";
         //var clientId = localStorage.getItem("currentClientId");
         console.log(getClientId());
+        $(".action-button").on("click", function () {
+            loadModule(this);
+        });
 
         $('#txt-record-date').datepicker({
             todayBtn: "linked",
@@ -170,6 +174,7 @@
         if (getClientId() !== null) {
             clientAction = "edit";
             $("input[data-editable='0']").attr("readonly", true);
+            $("button[data-client-exists='0']").attr("disabled", false);
             var jqXHR = findById(parseInt(getClientId())).done(createEditDoneHandler).fail(createEditFailHandler);
             if (jqXHR.status != 200) {
                 showAlert("BHermanos", jqXHR.responseText, "error");
@@ -269,8 +274,6 @@
             console.log(errorThrown);
         }
 
-        function getClientId() {
-            return localStorage.getItem("currentClientId");
-        }
+
 
     </script>
