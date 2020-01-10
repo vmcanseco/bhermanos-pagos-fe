@@ -1,0 +1,112 @@
+<form class="text-center needs-validation" id="frm-client">
+
+    <div class="md-form input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text md-addon">Id/Número de Cliente</span>
+        </div>
+        <input type="number" name="id" id="txt-id" maxlength="11" aria-label="Id" class="form-control" placeholder="Id"
+            readonly readonly>
+        <input type="number" name="numero" id="txt-number" maxlength="11" aria-label="Interno" class="form-control"
+            placeholder="Interno" readonly readonly>
+        <input type="text" name="idExterno" id="txt-external-id" maxlength="50" aria-label="Id Externo"
+            class="form-control" placeholder="Id Externo" readonly>
+    </div>
+    <div class="md-form input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text md-addon">Nombre Completo</span>
+        </div>
+        <input type="text" name="nombre" id="txt-first-name" maxlength="50" aria-label="Nombre" class="form-control"
+            placeholder="Nombre" readonly>
+        <input type="text" name="apellidoPaterno" id="txt-last-name" maxlength="50" aria-label="Apellido Paterno"
+            class="form-control" placeholder="Apellido Paterno" readonly>
+        <input type="text" name="apellidoMaterno" id="txt-second-last-name" maxlength="50" aria-label="Apellido Materno"
+            class="form-control" placeholder="Apellido Materno">
+    </div>
+    <div class="md-form  input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text md-addon">INE</span>
+        </div>
+        <input type="text" class="form-control" placeholder="INE" aria-label="INE" name="ine" id="txt-ine"
+            aria-describedby="btn-val-ine" maxlength="15" readonly>
+    </div>
+    <!--<div class="md-form input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text md-addon">Direccion</span>
+        </div>
+        <input type="text" name="calle" id="txt-street" maxlength="100" aria-label="Calle"
+            class="form-control" placeholder="Calle" readonly>
+        <input type="text" name="numeroExt" id="txt-num-ext" maxlength="10" aria-label="Número Ext."
+            class="form-control" placeholder="Número Ext." readonly>
+        <input type="text" name="numInt" id="txt-num-int" maxlength="5" aria-label="Número Int."
+            class="form-control" placeholder="Número Int.">
+    </div>
+    <div class="md-form input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text md-addon">Colonia y CP </span>
+        </div>
+        <input type="text" name="colonia" id="txt-neighbor" maxlength="100" aria-label="Colonia"
+            class="form-control" placeholder="Colonia" readonly>
+        <input type="text" name="zona" id="txt-zone" maxlength="100" aria-label="Zona" class="form-control"
+            placeholder="Zona" readonly>
+        <input type="number" name="cp" id="txt-cp" maxlength="10" aria-label="CP" class="form-control"
+            placeholder="00000" readonly>
+    </div>
+    <div class="md-form input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text md-addon" md-addon>Localización</span>
+        </div>
+        <input type="text" name="estado" id="txt-state" maxlength="100" aria-label="Estado"
+            class="form-control" placeholder="Estado" readonly>
+        <input type="text" name="municipio" id="txt-town" maxlength="100" aria-label="Municipio"
+            class="form-control" placeholder="Municipio" readonly>
+        <input type="text" name="ciudad" id="txt-city" maxlength="100" aria-label="Ciudad"
+            class="form-control" placeholder="Ciudad" readonly>
+    </div>
+    <div class="md-form input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text md-addon">Teléfonos</span>
+        </div>
+        <input type="tel" name readonly="telCasa" id="txt-home" maxlength="20" aria-label="Casa" class="form-control"
+            placeholder="Casa">
+        <input type="tel" name="movil1" id="txt-mobile-1" maxlength="20" aria-label="Móvil 1"
+            class="form-control" placeholder="Móvil 1" readonly>
+        <input type="tel" name="movil2" id="txt-mobile-2" maxlength="20" aria-label="Móvil 2"
+            class="form-control" placeholder="Móvil 2">
+        <input type="tel" name="movil3" id="txt-mobile-3" maxlength="20" aria-label="Móvil 3"
+            class="form-control" placeholder="Móvil 3">
+    </div>
+    <div class="md-form input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text md-addon">Correo/Facebook</span>
+        </div>
+        <input type="email" name="correoElectronico" id="txt-email" maxlength="100"
+            aria-label="Correo Electrónico" class="form-control" placeholder="correo@gmail.com" readonly>
+        <input type="text" name="facebook" id="txt-facebook" maxlength="100" aria-label="Facebook"
+            class="form-control" placeholder="Facebook" readonly>
+
+    </div>
+    <div class="md-form input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text md-addon">Fecha de Alta</span>
+        </div>
+        <input placeholder="Selecciona la Fecha de Alta" type="text" id="txt-record-date"
+            class="form-control" name="fechaAlta" readonly>
+    </div>
+    <div class="md-form input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text md-addon">Estatus del Cliente</span>
+        </div>
+        <input type="text" id="txt-active" aria-label="Estatus del Cliente" class="form-control" readonly
+            >
+
+    </div>
+    <div class=" md-form input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text md-addon">Historial</span>
+        </div>
+        <input type="text" name="fechaCreacion" id="txt-created-on" aria-label="Fecha de Creación"
+            class="form-control" placeholder="Fecha de Creación" readonly>
+        <input type="text" name="fechaModificacion" id="txt-updated-on" aria-label="Última de Modificación"
+            class="form-control" placeholder="Última de Modificación" readonly>
+    </div>-->
+</form>

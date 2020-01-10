@@ -135,7 +135,7 @@
                     <!-- <button type="button" class="btn btn-primary action-button" id="btn-new-client"
                         data-page="new-client"><i class="fas fa-user-plus"></i> Agregar
                         Cliente</button>-->
-                    <button type="button" class="btn btn-primary"><i class="fas fa-undo mr-1"></i>Revertir
+                    <button type="button" class="btn btn-secondary"><i class="fas fa-undo mr-1"></i>Revertir
                         Cambios</button>
                     <button type="button" class="btn btn-primary" disabled data-client-exists="0"><i
                             class="fas fa-user-minus mr-1"></i>Dar de
@@ -226,6 +226,8 @@
                         break;
                     default:
                 }
+            } else {
+                showAlert("BHermanos", "Capture todos los datos mandatorios", "error");
             }
         });
 

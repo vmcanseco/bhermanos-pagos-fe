@@ -1,0 +1,242 @@
+<link href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<link rel="stylesheet" href="datepicker/css/bootstrap-datepicker3.standalone.min.css">
+<script type="text/javascript" src="datepicker/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+<script src="js/utils.js"></script>
+
+<div class="container-fluid mt-3">
+    <div class="card">
+        <div class="card-header custom-header-card text-center">
+            <h5>Vales</h5>
+        </div>
+        <div class="card-body">
+            <section class="mb-1" id="sec-client">
+            </section>
+            <div id="toolbar">
+                <button type="button" class="btn btn-primary" id="btn-new-client" data-toggle="modal"
+                    data-target="#mod-new-voucher"><i class="fas fa-user-plus"></i> Agregar
+                    Vale</button>
+                <button type="button" class="btn btn-primary action-button" id="btn-view-statement" disabled><i
+                        class="fas fa-file-invoice"></i>
+                    Ver Pagos</button>
+                <button type="button" class="btn btn-primary action-button" data-page="list-clients"><i
+                        class="fas fa-users mr-1"></i>Ir a Listado de
+                    Clientes</button>
+            </div>
+            <table id="table" data-ajax="ajaxRequest" data-toggle="table" data-search="true" data-show-refresh="true"
+                data-show-toggle="true" data-show-fullscreen="true" data-show-columns="true"
+                data-show-columns-toggle-all="true" data-show-export="true" data-sort-class="table-active"
+                data-sortable="true" data-cache="false" data-pagination="true" data-locale="es-MX"
+                data-show-search-clear-button="true" data-page-list="[10, 25, 50, 100, all]"
+                data-search-on-enter-key="true" data-toolbar="#toolbar" data-click-to-select="true" data-id-field="id"
+                data-show-footer="true">
+                <thead>
+                    <tr>
+                        <th data-radio="true" class="column-header"></th>
+                        <th data-field="id" data-sortable="true" class="column-header">Id</th>
+                        <th data-field="folio" data-sortable="true" class="column-header"
+                            data-footer-formatter="totalFormatter">Folio</th>
+                        <th data-field="tipo" data-sortable="true" class="column-header" data-align="center"
+                            data-formatter="voucherType" data-footer-formatter="totalVochersFormatter">Tipo</th>
+                        <th data-field="fecha" data-sortable="true" class="column-header" data-align="right">Fecha</th>
+                        <th data-field="monto" data-sortable="true" class="column-header" data-align="right"
+                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Monto</th>
+                        <th data-field="montoPagado" data-sortable="true" class="column-header" data-align="right"
+                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Pagado</th>
+                        <th data-field="montoDisponible" data-sortable="true" class="column-header" data-align="right"
+                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Disponible</th>
+                        <th data-field="pagado" data-sortable="true" class="column-header" data-align="center"
+                            data-formatter="paymentStatus">Estado
+                        </th>
+                        <th data-field="ultimoPago" data-sortable="true" class="column-header" data-align="right">Último
+                            Pago</th>
+                        <th data-field="idDistribuidor.numero" data-sortable="true" class="column-header"
+                            data-align="right">Distribuidor
+                        </th>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="mod-new-voucher" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header text-center">
+                <h4 class="modal-title white-text w-100 font-weight-bold py-2">Nuevo Vale</h4>
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>-->
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+                <form class="text-center needs-validation" data-toggle="validator" novalidate id="frm-voucher">
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Id/Número de Cliente</span>
+                        </div>
+                        <input type="number" name="id" id="txt-id-1" maxlength="11" aria-label="Id" class="form-control"
+                            placeholder="Id" readonly>
+                        <input type="number" name="numero" id="txt-number-1" maxlength="11" aria-label="Interno"
+                            class="form-control" placeholder="Interno" readonly>
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Nombre</span>
+                        </div>
+                        <input type="text" name="nombre" id="txt-first-name-1" maxlength="50" aria-label="Nombre"
+                            class="form-control" placeholder="Nombre" readonly>
+                        <input type="text" name="apellidoPaterno" id="txt-last-name-1" maxlength="50"
+                            aria-label="Apellido Paterno" class="form-control" placeholder="Apellido Paterno" readonly>
+                        <input type="text" name="apellidoMaterno" id="txt-second-last-name-1" maxlength="50"
+                            aria-label="Apellido Materno" class="form-control" placeholder="Apellido Materno" readonly>
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Distribuidor</span>
+                        </div>
+                        <select class="browser-default custom-select" id="sel-distributor" required>
+                            <option value="1">054-00464 - JOSE ALBERTO</option>
+                        </select>
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Tipo</span>
+                        </div>
+                        <select class="browser-default custom-select" id="sel-type" required>
+                            <option value="V">Vale</option>
+                            <option value="C">Contravale</option>
+                        </select>
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Folio</span>
+                        </div>
+                        <input type="text" id="txt-folio" class="form-control validate" required maxlength="45">
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Monto $</span>
+                        </div>
+                        <input type="number" id="txt-amount-1" class="form-control validate" required maxlength="5"
+                            min="100" max="99999">
+                        <div class="invalid-feedback">
+                            Monto debe estar entre 100 y 99,999.
+                        </div>
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Fecha de Alta</span>
+                        </div>
+                        <input placeholder="Selecciona la Fecha de Alta" type="text" id="txt-record-date"
+                            class="form-control" name="fechaAlta" required>
+                    </div>
+                </form>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <button type="buttton" class="btn btn-primary" id="btn-save"><i
+                        class="fas fa-cloud mr-1"></i>Guardar</button>
+                <button type="button" class="btn btn-secondary" id="btn-close"><i
+                        class="fas fa-times mr-1"></i>Cerrar</button>
+            </div>
+
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+
+    $.get("fragment-client.html", function (data) {
+        $("#sec-client").html(data);
+    });
+
+    $(".action-button").on("click", function () {
+        loadModule(this);
+    });
+    $("#btn-save").on("click", function (event) {
+        event.preventDefault();
+        var form = document.getElementById("frm-voucher");
+        var isValidForm = form.checkValidity();
+        form.classList.add('was-validated');
+        console.log(isValidForm);
+
+        if (isValidForm) {
+            $('#mod-new-voucher').modal('hide');
+            //$('#mod-new-voucher').modal('dispose');
+        } else {
+            showAlert("BHermanos", "Capture todos los datos mandatorios", "error");
+        }
+    });
+
+    $("#btn-close").on("click", function (event) {
+        event.preventDefault();
+
+        //$('#mod-new-voucher').modal('dispose');
+        $('#mod-new-voucher').modal('hide');
+    });
+    // your custom ajax request here
+    function ajaxRequest(params) {
+        if (getClientId() !== null) {
+
+            var jqXHR = findById(getClientId()).done(function (data, textStatus, jqXHR) {
+                console.log(data);
+                fillClientForm(data);
+                params.success(data.valesCollection, null, {});
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText);
+                console.log(errorThrown);
+            });
+        }
+    }
+    function fillClientForm(data) {
+        $.each(data, function (key, val) {
+            $("input[name='" + key + "']").val(val);
+            console.log(key);
+            if (key === "activo") {
+                var active = "Inactivo";
+                if (val === "Y") {
+                    active = "Activo"
+                }
+
+                //$("#txt-active").val(active);
+            }
+        });
+    }
+
+    $('#mod-new-voucher').on('hidden.bs.modal', function () {
+        //alert("hOLA");
+
+    });
+
+    $('#mod-new-voucher').on('show.bs.modal', function () {
+        $('#txt-record-date').datepicker({
+            todayBtn: "linked",
+            clearBtn: true,
+            language: "es",
+            format: "dd-mm-yyyy"
+        });
+        $('#txt-record-date').datepicker('setDate', new Date());
+        $('#txt-amount-1').val("");
+        $('#txt-folio').val("");
+        $('#sel-type').val("V");
+        var form = document.getElementById("frm-voucher");
+        form.classList.remove('was-validated');
+    });
+
+
+</script>

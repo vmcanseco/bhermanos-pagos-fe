@@ -80,3 +80,18 @@ table.table-hover tbody tr:hover {
   .btn-secondary.dropdown-toggle{
     background: #FDCB18 !important;
   }
+
+  .modal-dialog.modal-notify.modal-warning .modal-header {
+    background-color: #FDCB18 !important;
+}
+.custom-select {
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: unset !important;
+}
+
+.custom-select:focus {
+    border-bottom: 1px solid #4285f4 !important;
+    box-shadow: 0 1px 0 0 #4285f4 !important;
+}
