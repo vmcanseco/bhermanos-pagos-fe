@@ -94,3 +94,12 @@ function totalVochersFormatter(data) {
     }
     return data.length + " Vale";
 }
+function clearSelect(element) {
+    $(element)
+        .find('option')
+        .remove();
+}
+function fillSelect(element, value, text) {
+    console.log(element + " " + value + " " + text);
+    $(element).append('<option value="' + value + '">' + text + '</option>');
+}

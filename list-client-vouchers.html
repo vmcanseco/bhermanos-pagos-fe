@@ -106,7 +106,6 @@
                             <span class="input-group-text md-addon">Distribuidor</span>
                         </div>
                         <select class="browser-default custom-select" id="sel-distributor" required>
-                            <option value="1">054-00464 - JOSE ALBERTO</option>
                         </select>
                     </div>
                     <div class="md-form input-group mb-3">
@@ -189,7 +188,9 @@
         //$('#mod-new-voucher').modal('dispose');
         $('#mod-new-voucher').modal('hide');
     });
-    // your custom ajax request here
+
+    loadDistributors();
+
     function ajaxRequest(params) {
         if (getClientId() !== null) {
 
@@ -237,6 +238,24 @@
         var form = document.getElementById("frm-voucher");
         form.classList.remove('was-validated');
     });
+
+
+    function loadDistributors() {
+        clearSelect("#sel-distributor");
+        var jqXHR = allActiveDistributors().done(function (data, textStatus, jqXHR) {
+            console.log(data);
+
+            $.each(data, function (index, value) {
+                console.log(index + " " + data[index]);
+                fillSelect("#sel-distributor", value.id, value.numero + " " + value.nombre);
+            });
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.responseText);
+            console.log(errorThrown);
+            showAlert("BHermanos", jqXHR.responseText, "error");
+        });
+
+    }
 
 
 </script>
