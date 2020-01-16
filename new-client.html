@@ -175,7 +175,7 @@
             clientAction = "edit";
             $("input[data-editable='0']").attr("readonly", true);
             $("button[data-client-exists='0']").attr("disabled", false);
-            var jqXHR = findById(parseInt(getClientId())).done(createEditDoneHandler).fail(createEditFailHandler);
+            var jqXHR = findClientById(parseInt(getClientId())).done(createEditDoneHandler).fail(createEditFailHandler);
             if (jqXHR.status != 200) {
                 showAlert("BHermanos", jqXHR.responseText, "error");
             }
@@ -250,7 +250,7 @@
             });
         });
 
-        function fillClientForm(data) {
+        /*function fillClientForm(data) {
             $.each(data, function (key, val) {
                 $("input[name='" + key + "']").val(val);
                 console.log(key);
@@ -264,11 +264,11 @@
                 }
             });
             $('.datepicker').datepicker('update', data.fechaAlta);
-        }
+        }*/
 
         function createEditDoneHandler(data, textStatus, jqXHR) {
             console.log(data);
-            fillClientForm(data);
+            fillClientForm(data, "frm-client");
         }
 
         function createEditFailHandler(jqXHR, textStatus, errorThrown) {

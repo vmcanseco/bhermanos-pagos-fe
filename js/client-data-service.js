@@ -65,7 +65,7 @@ function checkINE(ine) {
     return jqXHR;
 };
 
-function findById(id) {
+function findClientById(id) {
     var url = URL_CLIENT_MICROSERVICE + "/" + id;
 
     var settings = {

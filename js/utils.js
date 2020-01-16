@@ -103,3 +103,34 @@ function fillSelect(element, value, text) {
     console.log(element + " " + value + " " + text);
     $(element).append('<option value="' + value + '">' + text + '</option>');
 }
+
+function fillClientForm(data, form) {
+    $.each(data, function (key, val) {
+        $("#" + form + " :input[name='" + key + "']").val(val);
+        console.log(key);
+        if (key === "activo") {
+            var active = "Inactivo";
+            if (val === "Y") {
+                active = "Activo"
+            }
+
+            //$("#txt-active").val(active);
+        }
+    });
+}
+
+function loadDistributors(element) {
+    clearSelect("#" + element);
+    var jqXHR = allActiveDistributors().done(function (data, textStatus, jqXHR) {
+        console.log(data);
+
+        $.each(data, function (index, value) {
+            console.log(index + " " + data[index]);
+            fillSelect("#" + element, value.id, value.numero + " " + value.nombre);
+        });
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR.responseText);
+        console.log(errorThrown);
+        showAlert("BHermanos", jqXHR.responseText, "error");
+    });
+}

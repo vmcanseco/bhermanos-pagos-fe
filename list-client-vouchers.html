@@ -79,8 +79,8 @@
             </div>
 
             <!--Body-->
-            <div class="modal-body">
-                <form class="text-center needs-validation" data-toggle="validator" novalidate id="frm-voucher">
+            <div class="modal-body" id="mod-body-voucher">
+                <form class="text-center" id="frm-client-1">
                     <div class="md-form input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text md-addon">Id/Número de Cliente</span>
@@ -101,18 +101,28 @@
                         <input type="text" name="apellidoMaterno" id="txt-second-last-name-1" maxlength="50"
                             aria-label="Apellido Materno" class="form-control" placeholder="Apellido Materno" readonly>
                     </div>
+                    <div class="md-form  input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">INE</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="INE" aria-label="INE" name="ine"
+                            id="txt-ine-1" aria-describedby="btn-val-ine" maxlength="15" readonly>
+                    </div>
+                </form>
+                <form class="text-center needs-validation" data-toggle="validator" novalidate id="frm-voucher">
                     <div class="md-form input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text md-addon">Distribuidor</span>
                         </div>
-                        <select class="browser-default custom-select" id="sel-distributor" required>
+                        <select name="idDistribuidor" class="browser-default custom-select" id="sel-distributor"
+                            required>
                         </select>
                     </div>
                     <div class="md-form input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text md-addon">Tipo</span>
                         </div>
-                        <select class="browser-default custom-select" id="sel-type" required>
+                        <select name="tipo" class="browser-default custom-select" id="sel-type" required>
                             <option value="V">Vale</option>
                             <option value="C">Contravale</option>
                         </select>
@@ -121,14 +131,15 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text md-addon">Folio</span>
                         </div>
-                        <input type="text" id="txt-folio" class="form-control validate" required maxlength="45">
+                        <input name="folio" type="text" id="txt-folio" class="form-control validate" required
+                            maxlength="45">
                     </div>
                     <div class="md-form input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text md-addon">Monto $</span>
                         </div>
-                        <input type="number" id="txt-amount-1" class="form-control validate" required maxlength="5"
-                            min="100" max="99999">
+                        <input name="monto" type="number" id="txt-amount-1" class="form-control validate" required
+                            maxlength="5" min="100" max="99999">
                         <div class="invalid-feedback">
                             Monto debe estar entre 100 y 99,999.
                         </div>
@@ -137,7 +148,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text md-addon">Fecha de Alta</span>
                         </div>
-                        <input placeholder="Selecciona la Fecha de Alta" type="text" id="txt-record-date"
+                        <input name="fecha" placeholder="Selecciona la Fecha de Alta" type="text" id="txt-record-date"
                             class="form-control" name="fechaAlta" required>
                     </div>
                 </form>
@@ -162,6 +173,8 @@
 
     $.get("fragment-client.html", function (data) {
         $("#sec-client").html(data);
+        //$("#mod-body-voucher").html(data);
+
     });
 
     $(".action-button").on("click", function () {
@@ -175,8 +188,25 @@
         console.log(isValidForm);
 
         if (isValidForm) {
-            $('#mod-new-voucher').modal('hide');
-            //$('#mod-new-voucher').modal('dispose');
+            var voucher = serializeForm("#frm-voucher");
+            voucher["idCliente"] = parseInt(getClientId());
+            voucher["idDistribuidor"] = parseInt(voucher["idDistribuidor"]);
+            voucher["monto"] = parseFloat(voucher["monto"]);
+            console.log(voucher);
+            var jqXHR = createVoucher(voucher).done(function (data, textStatus, jqXHR) {
+                console.log(data);
+                showAlert("BHermanos", "Vale registrado exitósamente", "success");
+                $('#mod-new-voucher').modal('hide');
+                var $table = $('#table')
+                $table.bootstrapTable('refresh');
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText);
+                console.log(errorThrown);
+                showAlert("BHermanos", jqXHR.responseText, "error");
+            });
+
+
         } else {
             showAlert("BHermanos", "Capture todos los datos mandatorios", "error");
         }
@@ -184,39 +214,24 @@
 
     $("#btn-close").on("click", function (event) {
         event.preventDefault();
-
-        //$('#mod-new-voucher').modal('dispose');
         $('#mod-new-voucher').modal('hide');
     });
 
-    loadDistributors();
+    loadDistributors("sel-distributor");
 
     function ajaxRequest(params) {
         if (getClientId() !== null) {
 
-            var jqXHR = findById(getClientId()).done(function (data, textStatus, jqXHR) {
+            var jqXHR = findClientById(getClientId()).done(function (data, textStatus, jqXHR) {
                 console.log(data);
-                fillClientForm(data);
+                fillClientForm(data, "frm-client");
+                fillClientForm(data, "frm-client-1");
                 params.success(data.valesCollection, null, {});
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.responseText);
                 console.log(errorThrown);
             });
         }
-    }
-    function fillClientForm(data) {
-        $.each(data, function (key, val) {
-            $("input[name='" + key + "']").val(val);
-            console.log(key);
-            if (key === "activo") {
-                var active = "Inactivo";
-                if (val === "Y") {
-                    active = "Activo"
-                }
-
-                //$("#txt-active").val(active);
-            }
-        });
     }
 
     $('#mod-new-voucher').on('hidden.bs.modal', function () {
@@ -240,22 +255,8 @@
     });
 
 
-    function loadDistributors() {
-        clearSelect("#sel-distributor");
-        var jqXHR = allActiveDistributors().done(function (data, textStatus, jqXHR) {
-            console.log(data);
 
-            $.each(data, function (index, value) {
-                console.log(index + " " + data[index]);
-                fillSelect("#sel-distributor", value.id, value.numero + " " + value.nombre);
-            });
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR.responseText);
-            console.log(errorThrown);
-            showAlert("BHermanos", jqXHR.responseText, "error");
-        });
 
-    }
 
 
 </script>
