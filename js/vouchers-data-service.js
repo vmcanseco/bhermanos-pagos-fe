@@ -24,3 +24,20 @@ function createVoucher(voucher) {
 
     return jqXHR;
 }
+
+function findValidVouchersByClientId(clientId) {
+    var url = URL_VOUCHERS_MICROSERVICE + "/disponibles?idCliente=" + clientId;
+
+    var settings = {
+        "crossDomain": true,
+        "url": url,
+        "method": "GET",
+        "async": false,
+        "dataType": "json",
+        "timeout": MAX_TIMEOUT_SECONDS
+    }
+
+    var jqXHR = $.ajax(settings);
+
+    return jqXHR;
+};

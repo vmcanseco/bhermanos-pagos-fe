@@ -13,16 +13,20 @@
     </div>
     <div class="card-body">
       <div id="toolbar">
-        <button type="button" class="btn btn-primary action-button" id="btn-new-client" data-page="new-client"><i
+        <button type="button" class="btn btn-primary action-button btn-md" id="btn-new-client" data-page="new-client"><i
             class="fas fa-user-plus"></i> Agregar
           Cliente</button>
-        <button type="button" class="btn btn-primary action-button" id="btn-edit-client" data-page="new-client"
+        <button type="button" class="btn btn-primary action-button btn-md" id="btn-edit-client" data-page="new-client"
           disabled><i class="fas fa-user-edit"></i> Ver
           Cliente</button>
-        <button type="button" class="btn btn-primary action-button" id="btn-add-voucher" disabled
+        <button type="button" class="btn btn-primary action-button btn-md" id="btn-view-vouchers" disabled
           data-page="list-client-vouchers"><i class="fas fa-money-check-alt"></i>
           Ver Vales</button>
-        <button type="button" class="btn btn-primary action-button" id="btn-view-statement" disabled><i
+        <button type="button" class="btn btn-primary action-button btn-md" id="btn-view-sales" disabled
+          data-page="list-client-sales"><i class="fas fa-hand-holding-usd"></i>
+          Ver Venta</button>
+
+        <button type="button" class="btn btn-primary action-button btn-md" id="btn-view-statement" disabled><i
             class="fas fa-file-invoice"></i>
           Ver Pagos</button>
       </div>
@@ -62,8 +66,10 @@
 
   $('#table').on('click-row.bs.table', function (row, element, field) {
     localStorage.setItem("currentClientId", element.id);
-    $("#btn-add-voucher").removeAttr("disabled");
+    localStorage.setItem("currentClient", JSON.stringify(element));
+    $("#btn-view-vouchers").removeAttr("disabled");
     $("#btn-edit-client").removeAttr("disabled");
     $("#btn-view-statement").removeAttr("disabled");
+    $("#btn-view-sales").removeAttr("disabled");
   });
 </script>

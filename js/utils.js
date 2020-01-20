@@ -73,11 +73,27 @@ function paymentStatus(value) {
     }
 }
 
+function paymentDayFormmatter(value) {
+    if (value === 1) {
+        return "Inicio de Mes";
+    } else {
+        return "Fin de Mes";
+    }
+}
+
 
 function totalMoneyFormatter(data) {
-    var field = this.field
+    var field = this.field;
+    var arrFields = [];
+    arrFields = field.split(".");
     return '$' + data.map(function (row) {
-        return +row[field]
+        var value;
+        var tempRow = row;
+        arrFields.forEach(element => {
+            value = tempRow[element];
+            tempRow = value;
+        });
+        return + value//row[field]
     }).reduce(function (sum, i) {
         return sum + i
     }, 0)
@@ -127,6 +143,22 @@ function loadDistributors(element) {
         $.each(data, function (index, value) {
             console.log(index + " " + data[index]);
             fillSelect("#" + element, value.id, value.numero + " " + value.nombre);
+        });
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR.responseText);
+        console.log(errorThrown);
+        showAlert("BHermanos", jqXHR.responseText, "error");
+    });
+}
+function loadAvailableClientVouchers(element, clientId) {
+    clearSelect("#" + element);
+    fillSelect("#" + element, "", "Elija un Vale");
+    var jqXHR = findValidVouchersByClientId(clientId).done(function (data, textStatus, jqXHR) {
+        console.log(data);
+
+        $.each(data, function (index, value) {
+            console.log(index + " " + data[index]);
+            fillSelect("#" + element, value.id, value.tipo + value.folio + " - Disponible $ " + value.montoDisponible);
         });
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.log(jqXHR.responseText);
