@@ -1,5 +1,6 @@
 <link href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="datepicker/css/bootstrap-datepicker3.standalone.min.css">
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table-locale-all.min.js"></script>
@@ -84,7 +85,7 @@
 </div>
 
 <div class="modal fade" id="mod-new-sale" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-notify modal-warning modal-lg" role="document">
+    <div class="modal-dialog modal-notify modal-warning modal-fluid" role="document">
         <!--Content-->
         <div class="modal-content">
             <!--Header-->
@@ -140,11 +141,6 @@
                         </div>
                         <select name="idVale" class="browser-default custom-select" id="sel-voucher" required>
                         </select>
-                    </div>
-                    <div class="md-form input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text md-addon"></span>
-                        </div>
                         <select name="plazo" class="browser-default custom-select calc-min" id="sel-term" required>
                             <option value="">Elija el Plazo</option>
                             <option value="8">8 Quincenas</option>
@@ -152,26 +148,35 @@
                             <option value="24">24 Quincenas</option>
                             <option value="26">26 Quincenas</option>
                         </select>
-                        <select name="diaPago" class="browser-default custom-select" id="sel-pay-day" required>
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon"></span>
+                        </div>
+                        <select name="diaPago" class="browser-default custom-select calc-first-pay-day" id="sel-pay-day"
+                            required>
                             <option value="">Elija Día de Pago</option>
                             <option value="1">Inicio de Mes</option>
                             <option value="2">Fin de Mes</option>
                         </select>
-                        <select name="mesInicioPago" class="browser-default custom-select" id="sel-start-pay" required>
+                        <select name="mesInicioPago" class="browser-default custom-select calc-first-pay-day"
+                            id="sel-start-pay" required>
                             <option value="">Elija Primer Pago</option>
-                            <option value="1">Enero</option>
-                            <option value="2">Febero</option>
-                            <option value="3">Marzo</option>
-                            <option value="4">Abril</option>
-                            <option value="5">Mayo</option>
-                            <option value="6">Junio</option>
-                            <option value="7">Julio</option>
-                            <option value="8">Agosto</option>
-                            <option value="9">Septiembre</option>
-                            <option value="10">Octubre</option>
-                            <option value="11">Noviembre</option>
-                            <option value="12">Diciembre</option>
+                            <option value="0">Enero</option>
+                            <option value="1">Febero</option>
+                            <option value="2">Marzo</option>
+                            <option value="3">Abril</option>
+                            <option value="4">Mayo</option>
+                            <option value="5">Junio</option>
+                            <option value="6">Julio</option>
+                            <option value="7">Agosto</option>
+                            <option value="8">Septiembre</option>
+                            <option value="9">Octubre</option>
+                            <option value="10">Noviembre</option>
+                            <option value="11">Diciembre</option>
                         </select>
+                        <input name="primerPago" type="text" id="txt-first-pay" class="form-control validate" required
+                            placeholder="Fecha Primer Pago">
                     </div>
                     <!--<div class="md-form input-group mb-3">
                         <div class="input-group-prepend">
@@ -196,6 +201,11 @@
                         </div>
                         <input name="pagoMinimo" type="number" id="txt-min-pay" class="form-control validate" required
                             maxlength="5" placeholder="Pago Mínimo Sugerido">
+                        <div class="invalid-feedback">
+                            Pago no permitido
+                        </div>
+                        <input name="pagoFinal" type="number" id="txt-final-pay" class="form-control validate" required
+                            maxlength="5" placeholder="Pago Final Sugerido">
                         <div class="invalid-feedback">
                             Pago no permitido
                         </div>
@@ -263,15 +273,44 @@
 
             if (doubleAmount > 0) {
                 var minPay = Math.trunc(doubleAmount / intTerm);
+                var finalPay = doubleAmount - (minPay * (intTerm - 1));
                 $("#txt-min-pay").val(minPay);
+                $("#txt-final-pay").val(finalPay);
             }
+        }
+
+    });
+
+    $(".calc-first-pay-day").on("change", function (event) {
+        var dayPay = 0;
+        var monthPay = 0;
+        var firstPay;
+        dayPay = parseInt($("#sel-pay-day").val());
+        monthPay = parseInt($("#sel-start-pay").val());
+        console.log(dayPay + " " + monthPay);
+        if (!isNaN(dayPay) && !isNaN(monthPay)) {
+            var currDate = new Date();
+            var currMonth = currDate.getMonth();
+            var currYear = currDate.getFullYear();
+
+            if (monthPay < currMonth) {
+                currYear = currYear + 1;
+
+            }
+            if (dayPay === 2) {
+                firstPay = new Date(currYear, monthPay + 1, 0);
+            } else {
+                firstPay = new Date(currYear, monthPay, 15);
+            }
+            console.log(firstPay);
+            $('#txt-first-pay').datepicker('setDate', firstPay);
         }
 
     });
 
     $("#btn-save").on("click", function (event) {
         event.preventDefault();
-        var form = document.getElementById("frm-voucher");
+        var form = document.getElementById("frm-sale");
         var isValidForm = form.checkValidity();
         form.classList.add('was-validated');
         console.log(isValidForm);
@@ -281,11 +320,14 @@
             voucher["idVale"] = parseInt(voucher["idVale"]);
             voucher["plazo"] = parseInt(voucher["plazo"]);
             voucher["monto"] = parseFloat(voucher["monto"]);
+            voucher["diaPago"] = parseInt(voucher["diaPago"]);
+            voucher["mesInicioPago"] = parseInt(voucher["mesInicioPago"]);
+            voucher["pagoMinimo"] = parseFloat(voucher["pagoMinimo"]);
             console.log(voucher);
             var jqXHR = createVoucher(voucher).done(function (data, textStatus, jqXHR) {
                 console.log(data);
-                showAlert("BHermanos", "Vale registrado exitósamente", "success");
-                $('#mod-new-voucher').modal('hide');
+                showAlert("BHermanos", "Venta registrada exitósamente", "success");
+                $('#mod-new-sale').modal('hide');
                 var $table = $('#table')
                 $table.bootstrapTable('refresh');
 
@@ -317,10 +359,21 @@
             language: "es",
             format: "dd-mm-yyyy"
         });
+        $('#txt-first-pay').datepicker({
+            todayBtn: "linked",
+            clearBtn: true,
+            language: "es",
+            format: "dd-mm-yyyy"
+        });
         $('#txt-record-date').datepicker('setDate', new Date());
         $('#txt-amount-1').val("");
         $('#sel-voucher').val("");
         $('#sel-term').val("");
+        $('#sel-pay-day').val("");
+        $('#sel-start-pay').val("");
+        $('#txt-min-pay').val("");
+        $('#txt-final-pay').val("");
+        $('#txt-first-pay').datepicker('clearDates');
         var form = document.getElementById("frm-sale");
         form.classList.remove('was-validated');
     });
