@@ -21,9 +21,9 @@
                 <button type="button" class="btn btn-primary" id="btn-new-client" data-toggle="modal"
                     data-target="#mod-new-sale"><i class="fas fa-user-plus"></i> Agregar
                     Venta</button>
-                <button type="button" class="btn btn-primary action-button" id="btn-view-statement" disabled><i
-                        class="fas fa-file-invoice"></i>
-                    Ver Venta</button>
+                <button type="button" class="btn btn-primary" id="btn-view-payments" disabled data-toggle="modal"
+                    data-target="#mod-sale-payments"><i class="fas fa-cash-register"></i>
+                    Ver Plan de Pagos</button>
                 <button type="button" class="btn btn-primary action-button" data-page="list-clients"><i
                         class="fas fa-users mr-1"></i>Ir a Listado de
                     Clientes</button>
@@ -81,6 +81,65 @@
                 </thead>
             </table>
         </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mod-sale-payments" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning modal-fluid" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header text-center">
+                <h4 class="modal-title white-text w-100 font-weight-bold py-2">Plan de Pagos</h4>
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>-->
+            </div>
+
+            <!--Body-->
+            <div class="modal-body" id="mod-body-payment">
+                <table id="table-pay" data-toggle="table" data-search="true" data-show-refresh="true"
+                    data-show-toggle="true" data-show-fullscreen="true" data-show-columns="true"
+                    data-show-columns-toggle-all="true" data-show-export="true" data-sort-class="table-active"
+                    data-sortable="true" data-cache="false" data-pagination="true" data-locale="es-MX"
+                    data-show-search-clear-button="true" data-page-list="[8, 12, 24, 26, all]"
+                    data-search-on-enter-key="true" data-click-to-select="true" data-id-field="id"
+                    data-sort-name="numPago" data-sort-order="asc">
+                    <thead>
+                        <tr>
+                            <th data-radio="true" class="column-header"></th>
+                            <th data-field="id" data-sortable="true" class="column-header">Id</th>
+                            <th data-field="numPago" data-sortable="true" class="column-header"
+                                data-footer-formatter="totalFormatter" data-align="center">Número de Pago</th>
+                            <th data-field="tipoPago" data-sortable="true" class="column-header" data-align="center"
+                                data-formatter="paymentType">
+                                Tipo de Pago </th>
+                            <th data-field="monto" data-sortable="true" class="column-header" data-align="right"
+                                data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Monto</th>
+
+                            <th data-field="fechaProgramada" data-sortable="true" class="column-header"
+                                data-align="right">Fecha Programada Pago</th>
+                            <th data-field="fechaPago" data-sortable="true" class="column-header" data-align="right">
+                                Fecha Efectiva de Pago
+                            </th>
+                            <th data-field="formaPago" data-sortable="true" class="column-header" data-align="center">
+                                Forma de Pago</th>
+                            <th data-field="pagado" data-sortable="true" class="column-header" data-align="center"
+                                data-formatter="paymentStatus">Estado
+                            </th>
+
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" id="btn-close-pay"><i
+                        class="fas fa-times mr-1"></i>Cerrar</button>
+            </div>
+
+        </div>
+        <!--/.Content-->
     </div>
 </div>
 
@@ -316,15 +375,16 @@
         console.log(isValidForm);
 
         if (isValidForm) {
-            var voucher = serializeForm("#frm-sale");
-            voucher["idVale"] = parseInt(voucher["idVale"]);
-            voucher["plazo"] = parseInt(voucher["plazo"]);
-            voucher["monto"] = parseFloat(voucher["monto"]);
-            voucher["diaPago"] = parseInt(voucher["diaPago"]);
-            voucher["mesInicioPago"] = parseInt(voucher["mesInicioPago"]);
-            voucher["pagoMinimo"] = parseFloat(voucher["pagoMinimo"]);
-            console.log(voucher);
-            var jqXHR = createVoucher(voucher).done(function (data, textStatus, jqXHR) {
+            var sale = serializeForm("#frm-sale");
+            sale["idVale"] = parseInt(sale["idVale"]);
+            sale["plazo"] = parseInt(sale["plazo"]);
+            sale["monto"] = parseFloat(sale["monto"]);
+            sale["diaPago"] = parseInt(sale["diaPago"]);
+            sale["mesInicioPago"] = parseInt(sale["mesInicioPago"]);
+            sale["pagoMinimo"] = parseFloat(sale["pagoMinimo"]);
+            sale["pagoFinal"] = parseFloat(sale["pagoFinal"]);
+            console.log(sale);
+            var jqXHR = createSale(sale).done(function (data, textStatus, jqXHR) {
                 console.log(data);
                 showAlert("BHermanos", "Venta registrada exitósamente", "success");
                 $('#mod-new-sale').modal('hide');
@@ -346,6 +406,11 @@
     $("#btn-close").on("click", function (event) {
         event.preventDefault();
         $('#mod-new-sale').modal('hide');
+    });
+
+    $("#btn-close-pay").on("click", function (event) {
+        event.preventDefault();
+        $('#mod-sale-payments').modal('hide');
     });
 
     /*$("#sel-voucher").on('change', function() {
@@ -376,6 +441,21 @@
         $('#txt-first-pay').datepicker('clearDates');
         var form = document.getElementById("frm-sale");
         form.classList.remove('was-validated');
+    });
+
+    $('#mod-sale-payments').on('show.bs.modal', function () {
+        var currentSale = localStorage.getItem("currentSale");
+        console.log(currentSale);
+        var currebtJsonSale = JSON.parse(currentSale);
+        //
+        $("#table-pay").bootstrapTable('load', currebtJsonSale.pagosList);
+        $("#table-pay").bootstrapTable('resetView');
+
+    });
+
+    $('#table').on('click-row.bs.table', function (row, element, field) {
+        $("#btn-view-payments").removeAttr("disabled");
+        localStorage.setItem("currentSale", JSON.stringify(element));
     });
 
 </script>

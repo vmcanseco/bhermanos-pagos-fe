@@ -19,3 +19,26 @@ function findSalesByClientId(clientId) {
 
     return jqXHR;
 }
+
+function createSale(sale) {
+
+    var url = URL_SALES_MICROSERVICE;
+
+    console.log("Submit URL " + url);
+    console.log(JSON.stringify(sale));
+
+    var settings = {
+        "crossDomain": true,
+        "url": url,
+        "method": "POST",
+        "data": JSON.stringify(sale),
+        "contentType": "application/json; charset=utf-8",
+        "dataType": "json",
+        "async": false,
+        "timeout": MAX_TIMEOUT_SECONDS
+    }
+
+    var jqXHR = $.ajax(settings);
+
+    return jqXHR;
+}

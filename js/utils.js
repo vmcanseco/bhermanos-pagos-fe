@@ -81,6 +81,14 @@ function paymentDayFormmatter(value) {
     }
 }
 
+function paymentType(value) {
+    if (value === 1) {
+        return "Quincenal";
+    } else {
+        return "Mensual";
+    }
+}
+
 
 function totalMoneyFormatter(data) {
     var field = this.field;

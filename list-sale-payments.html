@@ -1,0 +1,97 @@
+<link href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="datepicker/css/bootstrap-datepicker3.standalone.min.css">
+<script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script type="text/javascript" src="datepicker/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+<script src="js/utils.js"></script>
+
+<div class="container-fluid mt-3">
+    <div class="card">
+        <div class="card-header custom-header-card text-center">
+            <h5>Plan de Pagos</h5>
+        </div>
+        <div class="card-body">
+            <section class="mb-1" id="sec-client">
+            </section>
+            <div id="toolbar">
+                <button type="button" class="btn btn-primary action-button" id="btn-new-client"
+                    data-page="list-client-sales"><i class="fas fa-user-plus"></i> Ir a
+                    Ventas</button>
+                <button type="button" class="btn btn-primary action-button" data-page="list-clients"><i
+                        class="fas fa-users mr-1"></i>Ir a Listado de
+                    Clientes</button>
+            </div>
+            <table id="table" data-ajax="ajaxRequest" data-toggle="table" data-search="true" data-show-refresh="true"
+                data-show-toggle="true" data-show-fullscreen="true" data-show-columns="true"
+                data-show-columns-toggle-all="true" data-show-export="true" data-sort-class="table-active"
+                data-sortable="true" data-cache="false" data-pagination="true" data-locale="es-MX"
+                data-show-search-clear-button="true" data-page-list="[10, 25, 50, 100, all]"
+                data-search-on-enter-key="true" data-toolbar="#toolbar" data-click-to-select="true" data-id-field="id"
+                data-show-footer="true">
+                <thead>
+                    <tr>
+                        <th data-radio="true" class="column-header"></th>
+                        <th data-field="id" data-sortable="true" class="column-header">Id</th>
+                        <th data-field="plazo" data-sortable="true" class="column-header"
+                            data-footer-formatter="totalFormatter" data-align="right">Plazo</th>
+                        <th data-field="monto" data-sortable="true" class="column-header" data-align="right"
+                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Monto</th>
+
+                        <th data-field="fecha" data-sortable="true" class="column-header" data-align="right">Fecha</th>
+                        <th data-field="diaPago" data-sortable="true" class="column-header" data-align="right"
+                            data-formatter="paymentDayFormmatter">Día de
+                            Pago</th>
+                        <th data-field="pagoMinimo" data-sortable="true" class="column-header" data-align="right"
+                            data-footer-formatter="totalMoneyFormatter">Pago Mínimo
+                        </th>
+                        <th data-field="montoPagado" data-sortable="true" class="column-header" data-align="right"
+                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Pagado</th>
+                        <th data-field="montoDisponible" data-sortable="true" class="column-header" data-align="right"
+                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Pendiente</th>
+                        <th data-field="pagado" data-sortable="true" class="column-header" data-align="center"
+                            data-formatter="paymentStatus">Estado </th>
+                        <th data-field="ultimoPago" data-sortable="true" class="column-header" data-align="right">Último
+                            Pago</th>
+                        <th data-field="intereses" data-sortable="true" class="column-header" data-align="right"
+                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Intereses</th>
+                        <th data-field="idVale.folio" data-sortable="true" class="column-header" data-align="right">
+                            Vale
+                        </th>
+                        <th data-field="idVale.idDistribuidor.numero" data-sortable="true" class="column-header"
+                            data-align="right">Distribuidor
+                        </th>
+                        <th data-field="idVale.monto" data-sortable="true" class="column-header" data-align="right"
+                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Monto del Vale
+                        </th>
+                        <th data-field="idVale.montoDisponible" data-sortable="true" class="column-header"
+                            data-align="right" data-formatter="moneyFormatter"
+                            data-footer-formatter="totalMoneyFormatter">Disponible en Vale</th>
+                        <th data-field="idVale.montoPagado" data-sortable="true" class="column-header"
+                            data-align="right" data-formatter="moneyFormatter"
+                            data-footer-formatter="totalMoneyFormatter">Pagado al Vale</th>
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $.get("fragment-client.html", function (data) {
+        $("#sec-client").html(data);
+        var currentClient = localStorage.getItem("currentClient");
+        var currebtJsonClient = JSON.parse(currentClient);
+        console.log(currebtJsonClient);
+        fillClientForm(currebtJsonClient, "frm-client");
+
+    });
+
+
+
+</script>
