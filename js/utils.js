@@ -168,6 +168,7 @@ function loadAvailableClientVouchers(element, clientId) {
             console.log(index + " " + data[index]);
             fillSelect("#" + element, value.id, value.tipo + value.folio + " - Disponible $ " + value.montoDisponible);
         });
+
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.log(jqXHR.responseText);
         console.log(errorThrown);

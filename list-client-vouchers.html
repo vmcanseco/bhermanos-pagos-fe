@@ -18,13 +18,16 @@
             <section class="mb-1" id="sec-client">
             </section>
             <div id="toolbar">
-                <button type="button" class="btn btn-primary" id="btn-new-client" data-toggle="modal"
-                    data-target="#mod-new-voucher"><i class="fas fa-user-plus"></i> Agregar
+                <button type="button" class="btn btn-primary btn-md" id="btn-new-client" data-toggle="modal"
+                    data-target="#mod-new-voucher"><i class="fas fa-money-check-alt"></i> Agregar
                     Vale</button>
-                <button type="button" class="btn btn-primary action-button" id="btn-view-statement" disabled><i
-                        class="fas fa-file-invoice"></i>
-                    Ver Pagos</button>
-                <button type="button" class="btn btn-primary action-button" data-page="list-clients"><i
+                <button type="button" class="btn btn-primary btn-md" id="btn-new-sale" data-toggle="modal"
+                    data-target="#mod-new-sale"><i class="fas fa-cart-plus"></i> Agregar
+                    Venta</button>
+                <button type="button" class="btn btn-primary action-button btn-md" id="btn-view-sales"
+                    data-page="list-client-sales"><i class="fas fa-hand-holding-usd"></i>
+                    Ver Ventas</button>
+                <button type="button" class="btn btn-primary action-button btn-md" data-page="list-clients"><i
                         class="fas fa-users mr-1"></i>Ir a Listado de
                     Clientes</button>
             </div>
@@ -167,6 +170,149 @@
     </div>
 </div>
 
+<div class="modal fade" id="mod-new-sale" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning modal-fluid" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header text-center">
+                <h4 class="modal-title white-text w-100 font-weight-bold py-2">Nueva Venta</h4>
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>-->
+            </div>
+
+            <!--Body-->
+            <div class="modal-body" id="mod-body-voucher">
+                <form class="text-center" id="frm-client-2">
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Id/Número de Cliente</span>
+                        </div>
+                        <input type="number" name="id" id="txt-id-2" maxlength="11" aria-label="Id" class="form-control"
+                            placeholder="Id" readonly>
+                        <input type="number" name="numero" id="txt-number-2" maxlength="11" aria-label="Interno"
+                            class="form-control" placeholder="Interno" readonly>
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Nombre</span>
+                        </div>
+                        <input type="text" name="nombre" id="txt-first-name-2" maxlength="50" aria-label="Nombre"
+                            class="form-control" placeholder="Nombre" readonly>
+                        <input type="text" name="apellidoPaterno" id="txt-last-name-2" maxlength="50"
+                            aria-label="Apellido Paterno" class="form-control" placeholder="Apellido Paterno" readonly>
+                        <input type="text" name="apellidoMaterno" id="txt-second-last-name-2" maxlength="50"
+                            aria-label="Apellido Materno" class="form-control" placeholder="Apellido Materno" readonly>
+                    </div>
+                    <div class="md-form  input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">INE</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="INE" aria-label="INE" name="ine"
+                            id="txt-ine-2" aria-describedby="btn-val-ine" maxlength="15" readonly>
+                    </div>
+                </form>
+                <form class="text-center needs-validation" data-toggle="validator" novalidate id="frm-sale">
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Fecha de Venta</span>
+                        </div>
+                        <input name="fecha" placeholder="Selecciona la Fecha de Alta" type="text" id="txt-record-date-2"
+                            class="form-control" name="fechaAlta" required>
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon"></span>
+                        </div>
+                        <select name="idVale" class="browser-default custom-select" id="sel-voucher" required>
+                        </select>
+                        <select name="plazo" class="browser-default custom-select calc-min" id="sel-term" required>
+                            <option value="">Elija el Plazo</option>
+                            <option value="8">8 Quincenas</option>
+                            <option value="12">12 Quincenas</option>
+                            <option value="24">24 Quincenas</option>
+                            <option value="26">26 Quincenas</option>
+                        </select>
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon"></span>
+                        </div>
+                        <select name="diaPago" class="browser-default custom-select calc-first-pay-day" id="sel-pay-day"
+                            required>
+                            <option value="">Elija Día de Pago</option>
+                            <option value="1">Inicio de Mes</option>
+                            <option value="2">Fin de Mes</option>
+                        </select>
+                        <select name="mesInicioPago" class="browser-default custom-select calc-first-pay-day"
+                            id="sel-start-pay" required>
+                            <option value="">Elija Primer Pago</option>
+                            <option value="0">Enero</option>
+                            <option value="1">Febero</option>
+                            <option value="2">Marzo</option>
+                            <option value="3">Abril</option>
+                            <option value="4">Mayo</option>
+                            <option value="5">Junio</option>
+                            <option value="6">Julio</option>
+                            <option value="7">Agosto</option>
+                            <option value="8">Septiembre</option>
+                            <option value="9">Octubre</option>
+                            <option value="10">Noviembre</option>
+                            <option value="11">Diciembre</option>
+                        </select>
+                        <input name="primerPago" type="text" id="txt-first-pay" class="form-control validate" required
+                            placeholder="Fecha Primer Pago">
+                    </div>
+                    <!--<div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Días de Pago</span>
+                        </div>
+                        
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Primer Pago</span>
+                        </div>
+                        
+                    </div>-->
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon"></span>
+                        </div>
+                        <input name="monto" type="number" id="txt-amount-2" class="form-control validate calc-min"
+                            required maxlength="5" min="100" placeholder="Monto de la Venta">
+                        <div class="invalid-feedback">
+                            Monto no permitido
+                        </div>
+                        <input name="pagoMinimo" type="number" id="txt-min-pay" class="form-control validate" required
+                            maxlength="5" placeholder="Pago Mínimo Sugerido">
+                        <div class="invalid-feedback">
+                            Pago no permitido
+                        </div>
+                        <input name="pagoFinal" type="number" id="txt-final-pay" class="form-control validate" required
+                            maxlength="5" placeholder="Pago Final Sugerido">
+                        <div class="invalid-feedback">
+                            Pago no permitido
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <button type="buttton" class="btn btn-primary" id="btn-save-sale"><i
+                        class="fas fa-cloud mr-1"></i>Guardar</button>
+                <button type="button" class="btn btn-secondary" id="btn-close-sale"><i
+                        class="fas fa-times mr-1"></i>Cerrar</button>
+            </div>
+
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
 
 <script type="text/javascript">
 
@@ -174,6 +320,12 @@
     $.get("fragment-client.html", function (data) {
         $("#sec-client").html(data);
         //$("#mod-body-voucher").html(data);
+        var currentClient = localStorage.getItem("currentClient");
+        var currebtJsonClient = JSON.parse(currentClient);
+        console.log(currebtJsonClient);
+        fillClientForm(currebtJsonClient, "frm-client");
+        fillClientForm(currebtJsonClient, "frm-client-1");
+        fillClientForm(currebtJsonClient, "frm-client-2");
 
     });
 
@@ -224,8 +376,8 @@
 
             var jqXHR = findClientById(getClientId()).done(function (data, textStatus, jqXHR) {
                 console.log(data);
-                fillClientForm(data, "frm-client");
-                fillClientForm(data, "frm-client-1");
+                //fillClientForm(data, "frm-client");
+                //fillClientForm(data, "frm-client-1");
                 params.success(data.valesCollection, null, {});
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.responseText);
@@ -234,6 +386,11 @@
         }
     }
 
+    $('#table').on('click-row.bs.table', function (row, element, field) {
+        localStorage.setItem("currentClientVoucherId", element.id);
+        console.log(element);
+        $("#btn-new-sale").removeAttr("disabled");
+    });
     $('#mod-new-voucher').on('hidden.bs.modal', function () {
         //alert("hOLA");
 
@@ -255,8 +412,128 @@
     });
 
 
+</script>
+
+<script type="text/javascript">
+
+    $(".calc-min").on("change", function (event) {
+        var term = "";
+        var amount = "";
+        term = $("#sel-term").val();
+        amount = $("#txt-amount-2").val();
+
+        if (!isNaN(term) && !isNaN(term)) {
+            var intTerm = parseInt(term);
+            var doubleAmount = parseFloat(amount);
+
+            if (doubleAmount > 0) {
+                var minPay = Math.trunc(doubleAmount / intTerm);
+                var finalPay = doubleAmount - (minPay * (intTerm - 1));
+                $("#txt-min-pay").val(minPay);
+                $("#txt-final-pay").val(finalPay);
+            }
+        }
+
+    });
+
+    $(".calc-first-pay-day").on("change", function (event) {
+        var dayPay = 0;
+        var monthPay = 0;
+        var firstPay;
+        dayPay = parseInt($("#sel-pay-day").val());
+        monthPay = parseInt($("#sel-start-pay").val());
+        console.log(dayPay + " " + monthPay);
+        if (!isNaN(dayPay) && !isNaN(monthPay)) {
+            var currDate = new Date();
+            var currMonth = currDate.getMonth();
+            var currYear = currDate.getFullYear();
+
+            if (monthPay < currMonth) {
+                currYear = currYear + 1;
+
+            }
+            if (dayPay === 2) {
+                firstPay = new Date(currYear, monthPay + 1, 0);
+            } else {
+                firstPay = new Date(currYear, monthPay, 15);
+            }
+            console.log(firstPay);
+            $('#txt-first-pay').datepicker('setDate', firstPay);
+        }
+
+    });
+
+    $("#btn-save-sale").on("click", function (event) {
+        event.preventDefault();
+        var form = document.getElementById("frm-sale");
+        var isValidForm = form.checkValidity();
+        form.classList.add('was-validated');
+        console.log(isValidForm);
+
+        if (isValidForm) {
+            var sale = serializeForm("#frm-sale");
+            sale["idVale"] = parseInt(sale["idVale"]);
+            sale["plazo"] = parseInt(sale["plazo"]);
+            sale["monto"] = parseFloat(sale["monto"]);
+            sale["diaPago"] = parseInt(sale["diaPago"]);
+            sale["mesInicioPago"] = parseInt(sale["mesInicioPago"]);
+            sale["pagoMinimo"] = parseFloat(sale["pagoMinimo"]);
+            sale["pagoFinal"] = parseFloat(sale["pagoFinal"]);
+            console.log(sale);
+            var jqXHR = createSale(sale).done(function (data, textStatus, jqXHR) {
+                console.log(data);
+                showAlert("BHermanos", "Venta registrada exitósamente", "success");
+                $('#mod-new-sale').modal('hide');
+                var $table = $('#table')
+                $table.bootstrapTable('refresh');
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText);
+                console.log(errorThrown);
+                showAlert("BHermanos", jqXHR.responseText, "error");
+            });
+
+
+        } else {
+            showAlert("BHermanos", "Capture todos los datos mandatorios", "error");
+        }
+    });
+
+    $("#btn-close-sale").on("click", function (event) {
+        event.preventDefault();
+        $('#mod-new-sale').modal('hide');
+    });
 
 
 
+    $('#mod-new-sale').on('show.bs.modal', function () {
+        var currenClientVoucherId = localStorage.getItem("currentClientVoucherId");
+        console.log("Current Voucher Id " + currenClientVoucherId);
+        loadAvailableClientVouchers("sel-voucher", getClientId());
 
+
+        $('#txt-record-date-2').datepicker({
+            todayBtn: "linked",
+            clearBtn: true,
+            language: "es",
+            format: "dd-mm-yyyy"
+        });
+        $('#txt-first-pay').datepicker({
+            todayBtn: "linked",
+            clearBtn: true,
+            language: "es",
+            format: "dd-mm-yyyy"
+        });
+        $('#txt-record-date-2').datepicker('setDate', new Date());
+        $('#txt-amount-2').val("");
+        $('#sel-voucher').val(currenClientVoucherId);
+        $('#sel-term').val("");
+        $('#sel-pay-day').val("");
+        $('#sel-start-pay').val("");
+        $('#txt-min-pay').val("");
+        $('#txt-final-pay').val("");
+        $('#txt-first-pay').datepicker('clearDates');
+        var form = document.getElementById("frm-sale");
+        form.classList.remove('was-validated');
+    });
 </script>

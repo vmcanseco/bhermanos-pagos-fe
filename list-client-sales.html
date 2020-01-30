@@ -18,13 +18,13 @@
             <section class="mb-1" id="sec-client">
             </section>
             <div id="toolbar">
-                <button type="button" class="btn btn-primary" id="btn-new-client" data-toggle="modal"
-                    data-target="#mod-new-sale"><i class="fas fa-user-plus"></i> Agregar
+                <button type="button" class="btn btn-primary btn-md" id="btn-new-sale" data-toggle="modal"
+                    data-target="#mod-new-sale"><i class="fas fa-cart-plus"></i> Agregar
                     Venta</button>
-                <button type="button" class="btn btn-primary" id="btn-view-payments" disabled data-toggle="modal"
+                <button type="button" class="btn btn-primary btn-md" id="btn-view-payments" disabled data-toggle="modal"
                     data-target="#mod-sale-payments"><i class="fas fa-cash-register"></i>
                     Ver Plan de Pagos</button>
-                <button type="button" class="btn btn-primary action-button" data-page="list-clients"><i
+                <button type="button" class="btn btn-primary action-button btn-md" data-page="list-clients"><i
                         class="fas fa-users mr-1"></i>Ir a Listado de
                     Clientes</button>
             </div>
@@ -44,7 +44,8 @@
                         <th data-field="monto" data-sortable="true" class="column-header" data-align="right"
                             data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Monto</th>
 
-                        <th data-field="fecha" data-sortable="true" class="column-header" data-align="right">Fecha</th>
+                        <th data-field="fecha" data-sortable="true" class="column-header" data-align="right">Fecha de
+                            Venta</th>
                         <th data-field="diaPago" data-sortable="true" class="column-header" data-align="right"
                             data-formatter="paymentDayFormmatter">Día de
                             Pago</th>
