@@ -230,9 +230,17 @@
                         <select name="plazo" class="browser-default custom-select calc-min" id="sel-term" required>
                             <option value="">Elija el Plazo</option>
                             <option value="8">8 Quincenas</option>
+                            <option value="10">10 Quincenas</option>
                             <option value="12">12 Quincenas</option>
+                            <option value="14">14 Quincenas</option>
+                            <option value="16">16 Quincenas</option>
+                            <option value="18">18 Quincenas</option>
+                            <option value="20">20 Quincenas</option>
+                            <option value="22">22 Quincenas</option>
                             <option value="24">24 Quincenas</option>
                             <option value="26">26 Quincenas</option>
+                            <option value="28">28 Quincenas</option>
+                            <option value="30">30 Quincenas</option>
                         </select>
                     </div>
                     <div class="md-form input-group mb-3">
@@ -261,7 +269,13 @@
                             <option value="10">Noviembre</option>
                             <option value="11">Diciembre</option>
                         </select>
-                        <input name="primerPago" type="text" id="txt-first-pay" class="form-control validate" required
+                        <input name="anioInicioPago" type="number" id="txt-anio-pago"
+                            class="form-control validate calc-first-pay-day" required maxlength="4" min="2019"
+                            max="9999" placeholder="Año">
+                        <div class="invalid-feedback">
+                            Año no válido, debe ser mayor o igual a 2019
+                        </div>
+                        <input name="primerPago" type="text" id="txt-first-pay" class="form-control validate" readonly
                             placeholder="Fecha Primer Pago">
                     </div>
                     <!--<div class="md-form input-group mb-3">
@@ -276,6 +290,22 @@
                         </div>
                         
                     </div>-->
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon"></span>
+                        </div>
+                        <input name="tasaInteres" type="number" id="txt-rate-int" class="form-control validate" required
+                            maxlength="2" min="0" max="99" placeholder="Tasa de Intereses Moratorios">
+                        <div class="invalid-feedback">
+                            La tasa de interes debe estar entre 0 y 99
+                        </div>
+                        <input name="diasInteres" type="number" id="txt-days-int" class="form-control validate" required
+                            maxlength="5" min="0" max="99999" placeholder="Días Máximos Interes">
+                        <div class="invalid-feedback">
+                            Los días de interes debe estar entre 0 y 99999
+                        </div>
+
+                    </div>
                     <div class="md-form input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text md-addon"></span>
@@ -439,26 +469,30 @@
     $(".calc-first-pay-day").on("change", function (event) {
         var dayPay = 0;
         var monthPay = 0;
+        var yearPay = 0;
         var firstPay;
         dayPay = parseInt($("#sel-pay-day").val());
         monthPay = parseInt($("#sel-start-pay").val());
-        console.log(dayPay + " " + monthPay);
-        if (!isNaN(dayPay) && !isNaN(monthPay)) {
+        yearPay = parseInt($("#txt-anio-pago").val());
+
+        console.log(dayPay + " " + monthPay + " " + yearPay);
+        if (!isNaN(dayPay) && !isNaN(monthPay) && !isNaN(yearPay)) {
             var currDate = new Date();
             var currMonth = currDate.getMonth();
-            var currYear = currDate.getFullYear();
+            //var currYear = currDate.getFullYear();
 
-            if (monthPay < currMonth) {
+            /*if (monthPay < currMonth) {
                 currYear = currYear + 1;
 
-            }
+            }*/
             if (dayPay === 2) {
-                firstPay = new Date(currYear, monthPay + 1, 0);
+                firstPay = new Date(yearPay, monthPay + 1, 0);
             } else {
-                firstPay = new Date(currYear, monthPay, 15);
+                firstPay = new Date(yearPay, monthPay, 15);
             }
+
             console.log(firstPay);
-            $('#txt-first-pay').datepicker('setDate', firstPay);
+            $('#txt-first-pay').val(firstPay.ddmmyyyy());
         }
 
     });
@@ -518,12 +552,7 @@
             language: "es",
             format: "dd-mm-yyyy"
         });
-        $('#txt-first-pay').datepicker({
-            todayBtn: "linked",
-            clearBtn: true,
-            language: "es",
-            format: "dd-mm-yyyy"
-        });
+
         $('#txt-record-date-2').datepicker('setDate', new Date());
         $('#txt-amount-2').val("");
         $('#sel-voucher').val(currenClientVoucherId);
@@ -532,7 +561,10 @@
         $('#sel-start-pay').val("");
         $('#txt-min-pay').val("");
         $('#txt-final-pay').val("");
-        $('#txt-first-pay').datepicker('clearDates');
+        $('#txt-anio-pago').val(new Date().getFullYear());
+        $('#txt-days-int').val("14");
+        $('#txt-rate-int').val("20");
+
         var form = document.getElementById("frm-sale");
         form.classList.remove('was-validated');
     });

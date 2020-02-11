@@ -46,22 +46,37 @@
 
                         <th data-field="fecha" data-sortable="true" class="column-header" data-align="right">Fecha de
                             Venta</th>
-                        <th data-field="diaPago" data-sortable="true" class="column-header" data-align="right"
-                            data-formatter="paymentDayFormmatter">Día de
-                            Pago</th>
-                        <th data-field="pagoMinimo" data-sortable="true" class="column-header" data-align="right"
+                        <th data-field="tasaInteres" data-sortable="true" class="column-header" data-align="center">Tasa
+                            de Interés
+                        </th>
+                        <th data-field="diasInteres" data-sortable="true" class="column-header" data-align="center">Días
+                            Intereses
+                        </th>
+                        <th data-field="pagoMinimo" data-sortable="true" class="column-header"
+                            data-formatter="moneyFormatter" data-align="right"
                             data-footer-formatter="totalMoneyFormatter">Pago Mínimo
                         </th>
+                        <th data-field="pagoFinal" data-sortable="true" class="column-header" data-align="right"
+                            data-footer-formatter="totalMoneyFormatter" data-formatter="moneyFormatter">Pago Final
+                        </th>
+
+                        <th data-field="primerPago" data-sortable="true" class="column-header" data-align="center">
+                            Primer
+                            Pago</th>
+                        <th data-field="ultimoPago" data-sortable="true" class="column-header" data-align="center">
+                            Último
+                            Pago</th>
                         <th data-field="montoPagado" data-sortable="true" class="column-header" data-align="right"
-                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Pagado</th>
+                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Monto Pagado
+                        </th>
+                        <th data-field="intereses" data-sortable="true" class="column-header" data-align="right"
+                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Int. Generados
+                        </th>
                         <th data-field="montoDisponible" data-sortable="true" class="column-header" data-align="right"
-                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Pendiente</th>
+                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Pendiente de
+                            Pago</th>
                         <th data-field="pagado" data-sortable="true" class="column-header" data-align="center"
                             data-formatter="paymentStatus">Estado </th>
-                        <th data-field="ultimoPago" data-sortable="true" class="column-header" data-align="right">Último
-                            Pago</th>
-                        <th data-field="intereses" data-sortable="true" class="column-header" data-align="right"
-                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Intereses</th>
                         <th data-field="idVale.folio" data-sortable="true" class="column-header" data-align="right">
                             Vale
                         </th>
@@ -69,7 +84,7 @@
                             data-align="right">Distribuidor
                         </th>
                         <th data-field="idVale.monto" data-sortable="true" class="column-header" data-align="right"
-                            data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Monto del Vale
+                            data-formatter="moneyFormatter">Monto del Vale
                         </th>
                         <th data-field="idVale.montoDisponible" data-sortable="true" class="column-header"
                             data-align="right" data-formatter="moneyFormatter"
@@ -96,6 +111,7 @@
                 <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="white-text">&times;</span>
                 </button>-->
+                </button>
             </div>
 
             <!--Body-->
@@ -104,7 +120,7 @@
                     data-show-toggle="true" data-show-fullscreen="true" data-show-columns="true"
                     data-show-columns-toggle-all="true" data-show-export="true" data-sort-class="table-active"
                     data-sortable="true" data-cache="false" data-pagination="true" data-locale="es-MX"
-                    data-show-search-clear-button="true" data-page-list="[8, 12, 24, 26, all]"
+                    data-show-search-clear-button="true" data-page-list="[8,10,12,14,16,18,20,22,24,26,28,30 all]"
                     data-search-on-enter-key="true" data-click-to-select="true" data-id-field="id"
                     data-sort-name="numPago" data-sort-order="asc">
                     <thead>
@@ -113,21 +129,25 @@
                             <th data-field="id" data-sortable="true" class="column-header">Id</th>
                             <th data-field="numPago" data-sortable="true" class="column-header"
                                 data-footer-formatter="totalFormatter" data-align="center">Número de Pago</th>
-                            <th data-field="tipoPago" data-sortable="true" class="column-header" data-align="center"
-                                data-formatter="paymentType">
-                                Tipo de Pago </th>
+
                             <th data-field="monto" data-sortable="true" class="column-header" data-align="right"
                                 data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Monto</th>
-
+                            <th data-field="intereses" data-sortable="true" class="column-header" data-align="right"
+                                data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Int.
+                                Generados</th>
                             <th data-field="fechaProgramada" data-sortable="true" class="column-header"
-                                data-align="right">Fecha Programada Pago</th>
-                            <th data-field="fechaPago" data-sortable="true" class="column-header" data-align="right">
-                                Fecha Efectiva de Pago
+                                data-align="center">Fecha Programada</th>
+
+                            <th data-field="montoPagado" data-sortable="true" class="column-header" data-align="right"
+                                data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Monto Pagado
                             </th>
-                            <th data-field="formaPago" data-sortable="true" class="column-header" data-align="center">
-                                Forma de Pago</th>
+                            <th data-field="interesesPagados" data-sortable="true" class="column-header"
+                                data-align="right" data-formatter="moneyFormatter"
+                                data-footer-formatter="totalMoneyFormatter">Int. Pagado
+                            </th>
                             <th data-field="pagado" data-sortable="true" class="column-header" data-align="center"
                                 data-formatter="paymentStatus">Estado
+
                             </th>
 
                         </tr>
@@ -204,9 +224,17 @@
                         <select name="plazo" class="browser-default custom-select calc-min" id="sel-term" required>
                             <option value="">Elija el Plazo</option>
                             <option value="8">8 Quincenas</option>
+                            <option value="10">10 Quincenas</option>
                             <option value="12">12 Quincenas</option>
+                            <option value="14">14 Quincenas</option>
+                            <option value="16">16 Quincenas</option>
+                            <option value="18">18 Quincenas</option>
+                            <option value="20">20 Quincenas</option>
+                            <option value="22">22 Quincenas</option>
                             <option value="24">24 Quincenas</option>
                             <option value="26">26 Quincenas</option>
+                            <option value="28">28 Quincenas</option>
+                            <option value="30">30 Quincenas</option>
                         </select>
                     </div>
                     <div class="md-form input-group mb-3">
@@ -235,7 +263,13 @@
                             <option value="10">Noviembre</option>
                             <option value="11">Diciembre</option>
                         </select>
-                        <input name="primerPago" type="text" id="txt-first-pay" class="form-control validate" required
+                        <input name="anioInicioPago" type="number" id="txt-anio-pago"
+                            class="form-control validate calc-first-pay-day" required maxlength="4" min="2019"
+                            max="9999" placeholder="Año">
+                        <div class="invalid-feedback">
+                            Año no válido, debe ser mayor o igual a 2019
+                        </div>
+                        <input name="primerPago" type="text" id="txt-first-pay" class="form-control validate" readonly
                             placeholder="Fecha Primer Pago">
                     </div>
                     <!--<div class="md-form input-group mb-3">
@@ -250,6 +284,22 @@
                         </div>
                         
                     </div>-->
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon"></span>
+                        </div>
+                        <input name="tasaInteres" type="number" id="txt-rate-int" class="form-control validate" required
+                            maxlength="2" min="0" max="99" placeholder="Tasa de Intereses Moratorios">
+                        <div class="invalid-feedback">
+                            La tasa de interes debe estar entre 0 y 99
+                        </div>
+                        <input name="diasInteres" type="number" id="txt-days-int" class="form-control validate" required
+                            maxlength="5" min="0" max="99999" placeholder="Días Máximos Interes">
+                        <div class="invalid-feedback">
+                            Los días de interes debe estar entre 0 y 99999
+                        </div>
+
+                    </div>
                     <div class="md-form input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text md-addon"></span>
@@ -344,26 +394,30 @@
     $(".calc-first-pay-day").on("change", function (event) {
         var dayPay = 0;
         var monthPay = 0;
+        var yearPay = 0;
         var firstPay;
         dayPay = parseInt($("#sel-pay-day").val());
         monthPay = parseInt($("#sel-start-pay").val());
-        console.log(dayPay + " " + monthPay);
-        if (!isNaN(dayPay) && !isNaN(monthPay)) {
+        yearPay = parseInt($("#txt-anio-pago").val());
+
+        console.log(dayPay + " " + monthPay + " " + yearPay);
+        if (!isNaN(dayPay) && !isNaN(monthPay) && !isNaN(yearPay)) {
             var currDate = new Date();
             var currMonth = currDate.getMonth();
-            var currYear = currDate.getFullYear();
+            //var currYear = currDate.getFullYear();
 
-            if (monthPay < currMonth) {
+            /*if (monthPay < currMonth) {
                 currYear = currYear + 1;
 
-            }
+            }*/
             if (dayPay === 2) {
-                firstPay = new Date(currYear, monthPay + 1, 0);
+                firstPay = new Date(yearPay, monthPay + 1, 0);
             } else {
-                firstPay = new Date(currYear, monthPay, 15);
+                firstPay = new Date(yearPay, monthPay, 15);
             }
+
             console.log(firstPay);
-            $('#txt-first-pay').datepicker('setDate', firstPay);
+            $('#txt-first-pay').val(firstPay.ddmmyyyy());
         }
 
     });
@@ -425,12 +479,7 @@
             language: "es",
             format: "dd-mm-yyyy"
         });
-        $('#txt-first-pay').datepicker({
-            todayBtn: "linked",
-            clearBtn: true,
-            language: "es",
-            format: "dd-mm-yyyy"
-        });
+
         $('#txt-record-date').datepicker('setDate', new Date());
         $('#txt-amount-1').val("");
         $('#sel-voucher').val("");
@@ -439,7 +488,9 @@
         $('#sel-start-pay').val("");
         $('#txt-min-pay').val("");
         $('#txt-final-pay').val("");
-        $('#txt-first-pay').datepicker('clearDates');
+        $('#txt-anio-pago').val(new Date().getFullYear());
+        $('#txt-days-int').val("14");
+        $('#txt-rate-int').val("20");
         var form = document.getElementById("frm-sale");
         form.classList.remove('was-validated');
     });

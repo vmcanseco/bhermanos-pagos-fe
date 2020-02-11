@@ -1,3 +1,16 @@
+Date.prototype.ddmmyyyy = function () {
+    var mm = this.getMonth() + 1; // getMonth() is zero-based
+    var dd = this.getDate();
+
+    return [
+
+        (dd > 9 ? '' : '0') + dd,
+        (mm > 9 ? '' : '0') + mm,
+        this.getFullYear()
+    ].join('-');
+};
+
+
 function emailFormatter(value) {
 
     return '<a href="mailto:' + value + '"><u>' + value + '</u></a>';
@@ -46,7 +59,12 @@ function showAlertAsHTML(title, htmlmessage, alert) {
 }
 
 function moneyFormatter(value) {
-    return "$ " + value;
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+    return formatter.format(value)
+    //return "$ " + value;
 }
 
 function voucherType(value) {
@@ -94,7 +112,8 @@ function totalMoneyFormatter(data) {
     var field = this.field;
     var arrFields = [];
     arrFields = field.split(".");
-    return '$' + data.map(function (row) {
+
+    var value = data.map(function (row) {
         var value;
         var tempRow = row;
         arrFields.forEach(element => {
@@ -104,7 +123,12 @@ function totalMoneyFormatter(data) {
         return + value//row[field]
     }).reduce(function (sum, i) {
         return sum + i
-    }, 0)
+    }, 0);
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+    return formatter.format(value);
 }
 
 function totalFormatter(data) {
