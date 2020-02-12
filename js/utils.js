@@ -162,7 +162,7 @@ function fillClientForm(data, form) {
                 active = "Activo"
             }
 
-            //$("#txt-active").val(active);
+            $("#txt-active").val(active);
         }
     });
 }

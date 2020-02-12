@@ -60,8 +60,14 @@
 </div>
 <script type="text/javascript">
   localStorage.removeItem("currentClientId");
+  
   $(".action-button").on("click", function () {
     loadModule(this);
+  });
+
+  $("#btn-new-client").on("click", function () {
+    localStorage.removeItem("currentClientId");
+    localStorage.removeItem("currentClient");
   });
 
   $('#table').on('click-row.bs.table', function (row, element, field) {

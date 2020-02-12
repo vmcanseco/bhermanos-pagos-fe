@@ -1,0 +1,67 @@
+<link href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="datepicker/css/bootstrap-datepicker3.standalone.min.css">
+<script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script type="text/javascript" src="datepicker/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+<script src="js/utils.js"></script>
+<div class="container-fluid mt-3">
+    <div class="card">
+        <div class="card-header custom-header-card text-center">
+            <h5>Reporte de Cobranza - Pagos por Cobrar</h5>
+        </div>
+        <div class="card-body">
+            <section class="mb-1" id="sec-search">
+                <form class="text-center" id="frm-collection-search" data-toggle="validator" novalidate>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Parámetros de Búsqueda</span>
+                        </div>
+                        <input placeholder="Fecha del Pago " type="text" id="txt-target-date" class="form-control"
+                            name="fechaPago" required>
+                        <select name="cliente" class="browser-default custom-select" id="sel-client">
+                            <option value="0">Seleccione el Cliente</option>
+                        </select>
+                        <select name="cliente" class="browser-default custom-select" id="sel-client" required>
+                            <option value="">Incluir Pagos Atrasados No Cubierto</option>
+                            <option value="0">No</option>
+                            <option value="1">Si</option>
+                        </select>
+
+                    </div>
+
+                </form>
+                <div class="text-center">
+                    <button type="buttton" class="btn btn-primary" id="btn-search"><i
+                            class="fas fa-cloud mr-1"></i>Buscar</button>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    $('#txt-target-date').datepicker({
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "es",
+        format: "dd-mm-yyyy"
+    });
+    // $('#txt-target-date').datepicker('setDate', new Date());
+
+    $("#btn-search").on("click", function (event) {
+        event.preventDefault();
+        var form = document.getElementById("frm-collection-search");
+        var isValidForm = form.checkValidity();
+        form.classList.add('was-validated');
+        console.log(isValidForm);
+
+        if (isValidForm) {
+        }
+    });
+</script>
