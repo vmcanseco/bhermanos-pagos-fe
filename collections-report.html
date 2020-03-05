@@ -25,10 +25,10 @@
                         <select name="cliente" class="browser-default custom-select" id="sel-client">
                             <option value="0">Seleccione el Cliente</option>
                         </select>
-                        <select name="cliente" class="browser-default custom-select" id="sel-client" required>
-                            <option value="">Incluir Pagos Atrasados No Cubierto</option>
-                            <option value="0">No</option>
-                            <option value="1">Si</option>
+                        <select name="cliente" class="browser-default custom-select" id="sel-delay-pay" required>
+                            <option value="">Incluir Pagos Atrasados</option>
+                            <option value="false">No</option>
+                            <option value="true">Si</option>
                         </select>
 
                     </div>
@@ -39,6 +39,80 @@
                             class="fas fa-cloud mr-1"></i>Buscar</button>
                 </div>
             </section>
+            <div>
+                <table id="table" data-toggle="table" data-search="true" data-show-refresh="true"
+                    data-show-toggle="true" data-show-fullscreen="true" data-show-columns="true"
+                    data-show-columns-toggle-all="true" data-show-export="true" data-sort-class="table-active"
+                    data-sortable="true" data-cache="false" data-pagination="true" data-locale="es-MX"
+                    data-show-search-clear-button="true" data-page-list="[10, 25, 50, 100, all]"
+                    data-search-on-enter-key="true" data-click-to-select="true" data-id-field="id"
+                    data-show-footer="true">
+                    <thead>
+                        <tr>
+                            <th data-radio="true" class="column-header"></th>
+                            <th data-field="cliente.id" data-sortable="true" class="column-header">Id</th>
+                            <th data-field="cliente.numero" data-sortable="true" class="column-header">Número</th>
+                            <th data-field="cliente.nombre" data-sortable="true" class="column-header">nombre</th>
+                            <th data-field="cliente.apellidoPaterno" data-sortable="true" class="column-header">Apellido
+                                Paterno</th>
+                            <th data-field="cliente.apellidoMaterno" data-sortable="true" class="column-header">Apellido
+                                Materno</th>
+                            <th data-field="cliente.zona" data-sortable="true" class="column-header"
+                                data-align="center">Zona</th>
+                            <th data-field="totalVentas" data-sortable="true" class="column-header" data-align="right"
+                                data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Total de
+                                Ventas</th>
+                            <th data-field="totalPagado" data-sortable="true" class="column-header" data-align="right"
+                                data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Monto Pagado
+                            </th>
+                            <th data-field="totalDisponible" data-sortable="true" class="column-header"
+                                data-align="right" data-formatter="moneyFormatter"
+                                data-footer-formatter="totalMoneyFormatter">Monto
+                                Adeudado</th>
+                            <th data-field="pago" data-sortable="true" class="column-header" data-align="right"
+                                data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Pago Mínimo
+                            </th>
+                            <th data-field="intereses" data-sortable="true" class="column-header" data-align="right"
+                                data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Interes</th>
+                            <th data-field="pagoTotal" data-sortable="true" class="column-header" data-align="right"
+                                data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Pago Total
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div>
+                <table id="table2" data-toggle="table" data-search="false" data-show-refresh="true"
+                    data-show-toggle="true" data-show-fullscreen="false" data-show-columns="true"
+                    data-show-columns-toggle-all="true" data-show-export="true" data-sort-class="table-active"
+                    data-sortable="true" data-cache="false" data-pagination="true" data-locale="es-MX"
+                    data-show-search-clear-button="true" data-page-list="[10, 25, 50, 100, all]"
+                    data-search-on-enter-key="true" data-click-to-select="true" data-id-field="id"
+                    data-show-footer="true">
+                    <thead>
+                        <tr>
+                            <th data-radio="true" class="column-header"></th>
+                            <th data-field="id" data-sortable="true" class="column-header">Id</th>
+                            <th data-field="numPago" data-sortable="true" class="column-header">Número</th>
+                            <th data-field="fechaProgramada" data-sortable="true" class="column-header">Fecha Programada
+                            </th>
+                            <th data-field="monto" data-sortable="true" class="column-header" data-align="right"
+                                data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Monto</th>
+                            <th data-field="intereses" data-sortable="true" class="column-header" data-align="right"
+                                data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Intereses
+                            </th>
+                            <th data-field="montoPagado" data-sortable="true" class="column-header" data-align="right"
+                                data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Monto Pagado
+                            </th>
+                            <th data-field="interesesPagados" data-sortable="true" class="column-header"
+                                data-align="right" data-formatter="moneyFormatter"
+                                data-footer-formatter="totalMoneyFormatter">Intereses Pagados</th>
+                            <th data-field="pagado" data-sortable="true" class="column-header" data-align="center"
+                                data-formatter="paymentStatus">Estado </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -52,6 +126,8 @@
         language: "es",
         format: "dd-mm-yyyy"
     });
+
+    loadClientPendingPayments("sel-client");
     // $('#txt-target-date').datepicker('setDate', new Date());
 
     $("#btn-search").on("click", function (event) {
@@ -62,6 +138,26 @@
         console.log(isValidForm);
 
         if (isValidForm) {
+            date = $("#txt-target-date").val();
+            clientId = $("#sel-client").val();
+            includeOldPayments = $("#sel-delay-pay").val();
+            var jqXHR = findPendingPaymentsByClient(date, clientId, includeOldPayments).done(function (data, textStatus, jqXHR) {
+                console.log(data);
+                var $table = $('#table');
+                $table.bootstrapTable('load', data);
+                //$table.bootstrapTable('refresh');
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText);
+                console.log(errorThrown);
+                showAlert("BHermanos", jqXHR.responseText, "error");
+            });
         }
+    });
+
+    $('#table').on('click-row.bs.table', function (row, element, field) {
+        //localStorage.setItem("currentCollectionClient", JSON.stringify(element));
+        var $table2 = $('#table2');
+        $table2.bootstrapTable('load', element.pagos);
     });
 </script>

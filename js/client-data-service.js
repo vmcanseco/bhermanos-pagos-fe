@@ -81,3 +81,20 @@ function findClientById(id) {
 
     return jqXHR;
 };
+
+function findClientByPendingPayments(id) {
+    var url = URL_CLIENT_MICROSERVICE + "/pagos-pendientes";
+
+    var settings = {
+        "crossDomain": true,
+        "url": url,
+        "method": "GET",
+        "async": false,
+        "dataType": "json",
+        "timeout": MAX_TIMEOUT_SECONDS
+    }
+
+    var jqXHR = $.ajax(settings);
+
+    return jqXHR;
+};

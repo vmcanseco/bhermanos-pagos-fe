@@ -199,3 +199,22 @@ function loadAvailableClientVouchers(element, clientId) {
         showAlert("BHermanos", jqXHR.responseText, "error");
     });
 }
+
+function loadClientPendingPayments(element) {
+    clearSelect("#" + element);
+    fillSelect("#" + element, "0", "Seleccione un Cliente");
+    var jqXHR = findClientByPendingPayments().done(function (data, textStatus, jqXHR) {
+        console.log(data);
+
+        $.each(data, function (index, value) {
+            console.log(index + " " + data[index]);
+            //fillSelect("#" + element, value.id, value.nombre + " " + value.apellidoPaterno + " "+value.apellidoMaterno);
+            fillSelect("#" + element, value.key, value.value);
+        });
+
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR.responseText);
+        console.log(errorThrown);
+        showAlert("BHermanos", jqXHR.responseText, "error");
+    });
+}
