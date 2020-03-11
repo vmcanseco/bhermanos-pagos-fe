@@ -69,6 +69,9 @@
                                 data-align="right" data-formatter="moneyFormatter"
                                 data-footer-formatter="totalMoneyFormatter">Monto
                                 Adeudado</th>
+                            <th data-field="cliente.debitoDisponible" data-sortable="true" class="column-header"
+                                data-align="right" data-formatter="moneyFormatter"
+                                data-footer-formatter="totalMoneyFormatter">Saldo a Favor</th>
                             <th data-field="pago" data-sortable="true" class="column-header" data-align="right"
                                 data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Pago Mínimo
                             </th>
@@ -93,6 +96,7 @@
                         <tr>
                             <th data-radio="true" class="column-header"></th>
                             <th data-field="id" data-sortable="true" class="column-header">Id</th>
+                            <th data-sortable="true" class="column-header" data-formatter="actionFormatter">Acción</th>
                             <th data-field="numPago" data-sortable="true" class="column-header">Número</th>
                             <th data-field="fechaProgramada" data-sortable="true" class="column-header">Fecha Programada
                             </th>
@@ -107,6 +111,15 @@
                             <th data-field="interesesPagados" data-sortable="true" class="column-header"
                                 data-align="right" data-formatter="moneyFormatter"
                                 data-footer-formatter="totalMoneyFormatter">Intereses Pagados</th>
+                            <th data-field="totalDisponible" data-sortable="true" class="column-header"
+                                data-align="right" data-formatter="moneyFormatter"
+                                data-footer-formatter="totalMoneyFormatter">Monto Adeudado</th>
+                            <th data-field="interesesDisponible" data-sortable="true" class="column-header"
+                                data-align="right" data-formatter="moneyFormatter"
+                                data-footer-formatter="totalMoneyFormatter">Interes Adeudado</th>
+                            <th data-field="pagoTotal" data-sortable="true" class="column-header" data-align="right"
+                                data-formatter="moneyFormatter" data-footer-formatter="totalMoneyFormatter">Pago Total
+                            </th>
                             <th data-field="pagado" data-sortable="true" class="column-header" data-align="center"
                                 data-formatter="paymentStatus">Estado </th>
                         </tr>
@@ -117,47 +130,313 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<div class="modal fade" id="mod-new-payment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning modal-fluid" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header text-center">
+                <h4 class="modal-title white-text w-100 font-weight-bold py-2">Registrar Pago</h4>
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>-->
+            </div>
+
+            <!--Body-->
+            <div class="modal-body" id="mod-body-payment">
+                <form class="text-center" id="frm-info-payment">
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Pago</span>
+                        </div>
+                        <input type="number" name="id" id="txt-num-pay" maxlength="11" aria-label="Id" placeholder="Id"
+                            readonly class="form-control form-control-sm">
+                        <input type="text" name="numero" id="txt-programmed-date" maxlength="11" aria-label="Interno"
+                            placeholder="Interno" readonly class="form-control form-control-sm">
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Saldo Disponible</span>
+                        </div>
+                        <input name="debitoDisponible" placeholder="Ingrese " type="number" id="txt-debit-available"
+                            class="form-control form-control-sm" readonly class="form-control form-control-sm">
+                    </div>
+                </form>
+                <form class="text-center needs-validation" data-toggle="validator" novalidate id="frm-new-payment">
+                    <input type="hidden" name="idPago" id="hid-pay-id">
+                    <input type="hidden" name="idCliente" id="hid-client-id">
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Fecha de Pago</span>
+                        </div>
+                        <input name="fechaPago" placeholder="Selecciona la Fecha de Pago" type="text"
+                            id="txt-record-date" required class="form-control form-control-sm">
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Forma de Pago</span>
+                        </div>
+                        <select name="formaPago"
+                            class="browser-default custom-select calc-min form-control form-control-sm"
+                            id="sel-pay-method" required>
+                            <option value="">Elija Forma de Pago</option>
+                            <option value="EFECTIVO">Efectivo</option>
+                            <option value="TRANSFERENCIA">Transferencia</option>
+                            <option value="SALDO">Saldo Disponible</option>
+                            <option value="OTRO">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Monto Adeudado / Pagado / Pendiente</span>
+                        </div>
+                        <input type="number" id="txt-amount-debt" class="form-control form-control-sm" readonly
+                            class="form-control form-control-sm">
+                        <input name="montoPagado" type="number" id="txt-amount-paid"
+                            class="form-control form-control-sm" readonly class="form-control form-control-sm">
+                        <input type="number" id="txt-amount-pend" class="form-control form-control-sm" readonly
+                            class="form-control form-control-sm">
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Interes Adeudado / Pagado / Pendiente</span>
+                        </div>
+                        <input type="number" id="txt-interest-debt" class="form-control form-control-sm" readonly
+                            class="form-control form-control-sm">
+                        <input name="interesesPagados" placeholder="Selecciona la Fecha de Pago" type="number"
+                            id="txt-interest-paid" class="form-control form-control-sm" readonly>
+                        <input type="number" id="txt-interest-pend" class="form-control form-control-sm" readonly
+                            class="form-control form-control-sm">
+                    </div>
+                    <div class="md-form input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text md-addon">Pago Total / Saldo a Favor</span>
+                        </div>
+                        <input placeholder="Selecciona la Fecha de Pago" type="number" id="txt-total-paid"
+                            class="form-control form-control-sm" required min="1" name="totalPagado">
+                        <input placeholder="Selecciona la Fecha de Pago" type="number" id="txt-total-debt"
+                            class="form-control form-control-sm" readonly>
+                    </div>
 
 
-    $('#txt-target-date').datepicker({
-        todayBtn: "linked",
-        clearBtn: true,
-        language: "es",
-        format: "dd-mm-yyyy"
-    });
+                </form>
+                <div class="modal-footer justify-content-center">
+                    <button type="buttton" class="btn btn-primary" id="btn-save-pay"><i
+                            class="fas fa-cloud mr-1"></i>Pagar</button>
+                    <button type="button" class="btn btn-secondary" id="btn-close-pay"><i
+                            class="fas fa-times mr-1"></i>Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
 
-    loadClientPendingPayments("sel-client");
-    // $('#txt-target-date').datepicker('setDate', new Date());
+        function actionFormatter(value, row, index) {
+            if (row.pagado === 'N') {
+                return '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#mod-new-payment"><i class="far fa-money-bill-alt"></i></button>';
+            } else {
+                return null;
+            }
 
-    $("#btn-search").on("click", function (event) {
-        event.preventDefault();
-        var form = document.getElementById("frm-collection-search");
-        var isValidForm = form.checkValidity();
-        form.classList.add('was-validated');
-        console.log(isValidForm);
-
-        if (isValidForm) {
-            date = $("#txt-target-date").val();
-            clientId = $("#sel-client").val();
-            includeOldPayments = $("#sel-delay-pay").val();
-            var jqXHR = findPendingPaymentsByClient(date, clientId, includeOldPayments).done(function (data, textStatus, jqXHR) {
-                console.log(data);
-                var $table = $('#table');
-                $table.bootstrapTable('load', data);
-                //$table.bootstrapTable('refresh');
-
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR.responseText);
-                console.log(errorThrown);
-                showAlert("BHermanos", jqXHR.responseText, "error");
-            });
         }
-    });
 
-    $('#table').on('click-row.bs.table', function (row, element, field) {
-        //localStorage.setItem("currentCollectionClient", JSON.stringify(element));
-        var $table2 = $('#table2');
-        $table2.bootstrapTable('load', element.pagos);
-    });
-</script>
+        $('#txt-target-date').datepicker({
+            todayBtn: "linked",
+            clearBtn: true,
+            language: "es",
+            format: "dd-mm-yyyy"
+        });
+
+        loadClientPendingPayments("sel-client");
+        // $('#txt-target-date').datepicker('setDate', new Date());
+
+        $("#btn-search").on("click", function (event) {
+            event.preventDefault();
+            executeCollectionReport();
+
+        });
+
+        function executeCollectionReport() {
+            var form = document.getElementById("frm-collection-search");
+            var isValidForm = form.checkValidity();
+            form.classList.add('was-validated');
+            console.log(isValidForm);
+
+            if (isValidForm) {
+                date = $("#txt-target-date").val();
+                clientId = $("#sel-client").val();
+                includeOldPayments = $("#sel-delay-pay").val();
+                var jqXHR = findPendingPaymentsByClient(date, clientId, includeOldPayments).done(function (data, textStatus, jqXHR) {
+                    console.log(data);
+                    var $table = $('#table');
+                    $table.bootstrapTable('load', data);
+                    //$table.bootstrapTable('refresh');
+
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.responseText);
+                    console.log(errorThrown);
+                    showAlert("BHermanos", jqXHR.responseText, "error");
+                });
+            }
+        }
+
+        $('#table').on('click-row.bs.table', function (row, element, field) {
+            localStorage.setItem("currentCollectionClient", JSON.stringify(element));
+            localStorage.setItem("currentCollectionClientRowIndex", JSON.stringify(field[0].sectionRowIndex));
+            var $table2 = $('#table2');
+            $table2.bootstrapTable('load', element.pagos);
+
+
+        });
+        $('#table2').on('click-row.bs.table', function (row, element, field) {
+            localStorage.setItem("currentCollectionClientPayment", JSON.stringify(element));
+        });
+
+
+        $("#btn-close-pay").on("click", function (event) {
+            event.preventDefault();
+            $('#mod-new-payment').modal('hide');
+        });
+
+        /*$("#sel-voucher").on('change', function() {
+            $("#txt-amount-1").prop("max",)
+        });*/
+
+        $('#mod-new-payment').on('show.bs.modal', function () {
+            $('#txt-record-date').datepicker({
+                todayBtn: "linked",
+                clearBtn: true,
+                language: "es",
+                format: "dd-mm-yyyy"
+            });
+
+            $('#txt-record-date').datepicker('setDate', new Date());
+            var payment = JSON.parse(localStorage.getItem("currentCollectionClientPayment"));
+            var client = JSON.parse(localStorage.getItem("currentCollectionClient"));
+
+            $('#txt-debit-available').val(client.cliente.debitoDisponible);
+            $('#txt-num-pay').val(payment.numPago);
+            $('#txt-programmed-date').val(payment.fechaProgramada);
+            $('#txt-amount-debt').val(payment.totalDisponible);
+            $('#txt-amount-paid').val(payment.totalDisponible);
+            $('#txt-amount-pend').val("0");
+            $('#txt-interest-paid').val(payment.interesesDisponible);
+            $('#txt-interest-debt').val(payment.interesesDisponible);
+            $('#txt-interest-pend').val("0");
+            $('#txt-total-paid').val(payment.pagoTotal);
+            $('#txt-total-paid').removeAttr("readonly");
+            $('#sel-pay-method').val("EFECTIVO");
+            $('#txt-total-debt').val("0");
+            $('#txt-total-debt').val("0");
+
+            $('#hid-pay-id').val(payment.id);
+            $('#hid-client-id').val(client.cliente.id);
+            var form = document.getElementById("frm-new-payment");
+            form.classList.remove('was-validated');
+        });
+
+
+        $('#txt-total-paid').on("change", function (event) {
+            calculate();
+        });
+
+        $('#sel-pay-method').on("change", function (event) {
+            var client = JSON.parse(localStorage.getItem("currentCollectionClient"));
+            var payMethod = $('#sel-pay-method').val();
+            if (payMethod === 'SALDO') {
+                if (client.cliente.debitoDisponible === 0) {
+                    showAlert("BHermanos", "No cuenta con saldo para usar este método de pago", "warning");
+                    $('#sel-pay-method').val("");
+                } else {
+                    $('#txt-total-paid').prop("readonly", true);
+                    $('#txt-total-paid').val(client.cliente.debitoDisponible);
+                    calculate();
+                }
+
+            } else {
+                $('#txt-total-paid').prop("readonly", false);
+            }
+        });
+
+
+        $("#btn-save-pay").on("click", function (event) {
+            event.preventDefault();
+            var form = document.getElementById("frm-new-payment");
+            var isValidForm = form.checkValidity();
+            form.classList.add('was-validated');
+            console.log(isValidForm);
+
+            if (isValidForm) {
+                var client = JSON.parse(localStorage.getItem("currentCollectionClient"));
+                var payMethod = $('#sel-pay-method').val();
+                if (payMethod === 'SALDO') {
+                    if (client.cliente.debitoDisponible === 0) {
+                        showAlert("BHermanos", "No cuenta con saldo para usar este método de pago", "warning");
+                        //$('#sel-pay-method').val("");
+                    }
+
+                }
+                var paymentForm = serializeForm("#frm-new-payment");
+                paymentForm["idPago"] = parseInt(paymentForm["idPago"]);
+                paymentForm["idCliente"] = parseInt(paymentForm["idCliente"]);
+                paymentForm["montoPagado"] = parseFloat(paymentForm["montoPagado"]);
+                paymentForm["interesesPagados"] = parseFloat(paymentForm["interesesPagados"]);
+                paymentForm["totalPagado"] = parseFloat(paymentForm["totalPagado"]);
+                var jqXHR = applyCollectionPayment(paymentForm).done(function (data, textStatus, jqXHR) {
+                    showAlert("BHermanos", "Pago registrado exitósamente", "info");
+                    $('#mod-new-payment').modal('hide');
+                    executeCollectionReport();
+                    var clientRowIndex = localStorage.getItem("currentCollectionClientRowIndex");
+                    $("#table > tbody > tr:eq('" + clientRowIndex + "') > td:eq('0')").click();
+
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.responseText);
+                    console.log(errorThrown);
+                    showAlert("BHermanos", jqXHR.responseText, "error");
+                });
+
+            }
+        });
+
+        function calculate() {
+            var payment = JSON.parse(localStorage.getItem("currentCollectionClientPayment"));
+            var totalPaid = $("#txt-total-paid").val();
+            var interestPaid = 0;
+            var interestPend = 0;
+
+            var amountPaid = 0;
+            var amountPend = 0;
+
+            if (payment.interesesDisponible > totalPaid) {
+                interestPaid = totalPaid;
+                interestPend = payment.interesesDisponible - totalPaid;
+                totalPaid = 0;
+            } else {
+                interestPaid = payment.interesesDisponible;
+                interestPend = 0;
+                totalPaid = totalPaid - payment.interesesDisponible;
+            }
+
+            if (totalPaid > 0) {
+                if (payment.totalDisponible > totalPaid) {
+                    amountPaid = totalPaid;
+                    amountPend = payment.totalDisponible - totalPaid;
+                    totalPaid = 0;
+                } else {
+                    amountPaid = payment.totalDisponible;
+                    amountPend = 0;
+                    totalPaid = totalPaid - payment.totalDisponible;
+                }
+            }
+
+            $('#txt-amount-paid').val(amountPaid);
+            $('#txt-amount-pend').val(amountPend);
+            $('#txt-interest-debt').val(interestPaid);
+            $('#txt-interest-pend').val(interestPend);
+            $('#txt-total-debt').val(totalPaid);
+            //$('#txt-total-paid').val(totalPaid);
+        }
+
+    </script>
