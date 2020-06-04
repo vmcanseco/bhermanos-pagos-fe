@@ -41,3 +41,25 @@ function applyCollectionPayment(payment) {
 
     return jqXHR;
 }
+
+function calculateInterest(date, apply) {
+    var url = URL_COLLECTION_MICROSERVICE + "/calculo-interes";
+
+    var settings = {
+        "crossDomain": true,
+        "url": url,
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          "data": {
+            "fecha": date,
+            "aplicar": apply
+          },
+        "timeout": MAX_TIMEOUT_SECONDS
+    }
+
+    var jqXHR = $.ajax(settings);
+
+    return jqXHR;
+}
